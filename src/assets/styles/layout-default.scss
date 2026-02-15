@@ -1,0 +1,728 @@
+// 변수 정의
+$primary-color: #4096ff;
+$danger-color: #ff4d4f;
+$dark-border: #424242;
+$dark-bg: #141414;
+$dark-text: #d9d9d9;
+$gray-border: #e4e4e4;
+$gray-text: #1f1f1f;
+$blue-custom167: #1677ff;
+$sky-blue: #1890ff;
+
+@media print {
+  .hidden-print {
+    display: none !important;
+  }
+}
+
+.ql-align-center {
+  text-align: center;
+}
+.ql-align-right {
+  text-align: right;
+}
+.ql-resize-style-right {
+  float: right;
+  margin: 0 0 1em 1em;
+}
+
+// 버튼 스타일
+.btn_outLine_default_sm {
+  height: 1.5rem;
+  padding: 0 0.375rem;
+  font-size: 0.875rem;
+  border: 1px solid $gray-border;
+  background-color: white;
+  white-space: nowrap;
+  border-radius: 0.25rem;
+
+  .dark & {
+    border-color: $dark-border;
+    background-color: $dark-bg;
+  }
+}
+
+.btn_outLine_default_md {
+  height: 2rem;
+  padding: 0 0.75rem;
+  background-color: white;
+  border: 1px solid $gray-border;
+  white-space: nowrap;
+  border-radius: 0.25rem;
+
+  .dark & {
+    color: $dark-text;
+    border-color: $dark-border;
+    background-color: $dark-bg;
+  }
+}
+
+.btn_outLine_default_lg {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid $gray-border;
+  background-color: white;
+  white-space: nowrap;
+  border-radius: 0.25rem;
+
+  .dark & {
+    border-color: $dark-border;
+    background-color: $dark-bg;
+  }
+}
+
+.btn_primary_sm {
+  height: 1.5rem;
+  padding: 0 0.375rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  color: white;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+
+  .dark & {
+    border-color: $blue-custom167;
+    background-color: $blue-custom167;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+  }
+}
+
+.btn_primary_md {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: white;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 0.375rem;
+  box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgb(250, 250, 250) 0px 2px 0px 0px;
+
+  .dark & {
+    border-color: $blue-custom167;
+    background-color: $blue-custom167;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+  }
+}
+
+.btn_primary_lg {
+  height: 2.5rem;
+  padding: 0 0.5rem;
+  white-space: nowrap;
+  color: white;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+
+  .dark & {
+    border-color: $blue-custom167;
+    background-color: $blue-custom167;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+  }
+}
+
+.btn_outLine_primary_md {
+  height: 2rem;
+  padding: 0 0.5rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  border: 1px solid $primary-color;
+  color: #333;
+  background-color: white;
+}
+
+.btn_outLine_primary_lg {
+  height: 2.5rem;
+  padding: 0 0.5rem;
+  border-radius: 0.125rem;
+  white-space: nowrap;
+  border: 1px solid $primary-color;
+  color: #333;
+  background-color: white;
+}
+
+.btn_secondary_md {
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  border: 1px solid $primary-color;
+  color: $primary-color;
+  background-color: white;
+}
+
+.btn_secondary_lg {
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  border: 1px solid $primary-color;
+  color: $primary-color;
+  background-color: white;
+}
+
+.btn_tertiary_del_sm {
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid $danger-color;
+  background-color: white;
+  white-space: nowrap;
+  border-radius: 0.25rem;
+  color: $danger-color;
+}
+
+.btn_tertiary_sm {
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid $primary-color;
+  background-color: white;
+  white-space: nowrap;
+  border-radius: 0.25rem;
+  color: $blue-custom167;
+}
+
+.btn_tertiary_md {
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 15px;
+  font-size: 0.875rem;
+  line-height: 22px;
+  color: $primary-color;
+  background-color: white;
+  border: 1px solid $primary-color;
+  border-radius: 0.25rem;
+
+  .dark & {
+    background-color: $dark-bg;
+    border-color: $blue-custom167;
+    color: $blue-custom167;
+  }
+}
+
+.btn_tertiary_lg {
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 15px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: $primary-color;
+  background-color: white;
+  border: 1px solid $primary-color;
+  border-radius: 0.375rem;
+
+  .dark & {
+    background-color: $dark-bg;
+    border-color: $blue-custom167;
+    color: $blue-custom167;
+  }
+}
+
+.btn_outLine_modal_sm {
+  height: 2.5rem;
+  padding: 0 15px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: $gray-text;
+  border: 1px solid $gray-border;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+
+  .dark & {
+    border-color: $dark-border;
+    color: $dark-text;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+  }
+}
+
+.btn_search_md {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: white;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+
+  .dark & {
+    border-color: $blue-custom167;
+    background-color: $blue-custom167;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+  }
+}
+
+.btn_search_detail_md {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: $gray-text;
+  border: 1px solid $gray-border;
+  border-radius: 0.25rem;
+
+  .dark & {
+    border-color: $dark-border;
+    color: $dark-text;
+  }
+}
+
+.btn_delete_md {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  border: 1px solid $danger-color;
+  border-radius: 0.25rem;
+  color: $danger-color;
+}
+
+.btn_delete_sm {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  border: 1px solid $danger-color;
+  border-radius: 0.25rem;
+  color: $danger-color;
+}
+
+.btn_excel_md {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  border: 1px solid;
+  border-radius: 0.25rem;
+  color: white;
+  background-color: #1f7246;
+}
+
+.btn_update_md {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  border: 1px solid $primary-color;
+  border-radius: 0.25rem;
+  color: $primary-color;
+  background-color: white;
+}
+
+.btn_update_sm {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  border: 1px solid $primary-color;
+  border-radius: 0.25rem;
+  color: $primary-color;
+  background-color: white;
+}
+
+.btn_insert_md {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  color: white;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+.btn_insert_sm {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 1.5rem;
+  color: white;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+.btn_confirm_sm {
+  cursor: pointer;
+  display: inline-block;
+  align-items: center;
+  height: 22px;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  border: 1px solid;
+  border-radius: 0.25rem;
+}
+
+.btn_confirm_sm_type1 {
+  @extend .btn_confirm_sm;
+  color: $gray-text;
+  background-color: #fafafa;
+  border-color: $gray-border;
+}
+
+.btn_confirm_sm_type2 {
+  @extend .btn_confirm_sm;
+  color: #52c41a;
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+}
+
+.btn_confirm_sm_type3 {
+  @extend .btn_confirm_sm;
+  color: $sky-blue;
+  border-color: #91caff;
+}
+
+.btn_confirm_sm_type4 {
+  @extend .btn_confirm_sm;
+  color: $gray-text;
+  border-color: $gray-border;
+}
+
+.btn_confirm_sm_type5 {
+  @extend .btn_confirm_sm;
+  color: $danger-color;
+  border-color: $danger-color;
+}
+
+.div_tabmenu_hover {
+  padding-top: 1rem;
+  padding-bottom: 0.875rem;
+  font-size: 1rem;
+  border-bottom: 2px solid transparent;
+
+  &:hover {
+    border-color: $sky-blue;
+    color: $sky-blue;
+  }
+
+  .dark & {
+    color: $dark-text;
+  }
+}
+
+.div_tabmenu_active {
+  padding-top: 1rem;
+  padding-bottom: 0.875rem;
+  font-size: 1rem;
+  border-bottom: 2px solid $sky-blue;
+  color: $sky-blue;
+}
+
+.badge {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: white;
+  background-color: $danger-color;
+  border-radius: 0.25rem;
+}
+
+.badge_confirm_sm_type1 {
+  @extend .badge;
+  color: #7e747e;
+  background-color: #f7f7f8;
+}
+
+.badge_confirm_sm_type2 {
+  @extend .badge;
+  color: #43c490;
+  background-color: #f0fbf1;
+}
+
+.badge_confirm_sm_type3 {
+  @extend .badge;
+  color: #5157d3;
+  background-color: #fcefef;
+}
+
+.badge_confirm_sm_type4 {
+  @extend .badge;
+  color: #f9bc57;
+  background-color: #fffaec;
+}
+
+.easy-rounded-table {
+  --easy-table-header-background-color: #f5f5f5;
+}
+
+.easy-rounded-table {
+  --easy-table-header-font-size: 14px;
+  --easy-table-body-row-font-size: 14px;
+  --easy-table-footer-font-size: 14px;
+  --easy-table-header-height: 50px;
+  --easy-table-body-row-height: 50px;
+  border-radius: 10px;
+}
+.vue3-easy-data-table .shadow {
+  box-shadow: none !important;
+}
+.easy-rounded-table .vue3-easy-data-table__main {
+  border-radius: 10px;
+}
+
+.dark-mode-table {
+  --easy-table-border: 1px solid #374151;
+  --easy-table-header-background-color: #1f2937;
+  --easy-table-header-font-color: #d1d5db;
+  --easy-table-body-row-background-color: #111827;
+  --easy-table-body-row-font-color: #d1d5db;
+  --easy-table-body-row-hover-background-color: #374151;
+  --easy-table-footer-background-color: #ffffff;
+  --easy-table-footer-font-color: #d1d5db;
+  --easy-table-rows-per-page-selector-background-color: #1f2937;
+  --easy-table-rows-per-page-selector-color: #d1d5db;
+  --easy-table-row-border: 1px solid #374151;
+  --easy-table-body-row-hover-font-color: #d1d5db;
+}
+
+.tinymce-content {
+  width: 100%;
+
+  // 이미지 스타일
+  img {
+    max-width: 100%;
+    height: auto;
+    display: inline;
+    vertical-align: text-bottom;
+  }
+
+  // 제목 스타일 (h1 ~ h6)
+  h1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  h4 {
+    font-size: 1.125em;
+    font-weight: bold;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  h5 {
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  h6 {
+    font-size: 0.875em;
+    font-weight: bold;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    color: #666;
+  }
+
+  // 문단 스타일
+  p {
+    text-align: left;
+    margin: 16px 0;
+  }
+
+  // 불릿 리스트 (ul)
+  ul {
+    margin: 16px 0;
+    padding-left: 40px;
+    list-style-type: disc;
+
+    // 중첩 리스트 - 2단계
+    ul {
+      list-style-type: circle;
+      margin: 8px 0;
+
+      // 중첩 리스트 - 3단계
+      ul {
+        list-style-type: square;
+      }
+    }
+  }
+
+  // 번호 리스트 (ol)
+  ol {
+    margin: 16px 0;
+    padding-left: 40px;
+    list-style-type: decimal;
+
+    // 번호 중첩 리스트 - 2단계
+    ol {
+      list-style-type: lower-alpha;
+      margin: 2px 0;
+
+      // 번호 중첩 리스트 - 3단계
+      ol {
+        list-style-type: lower-roman;
+      }
+    }
+  }
+
+  // 리스트 항목
+  li {
+    margin: 2px 0;
+    list-style-position: outside;
+  }
+
+  // 링크 스타일
+  a {
+    color: #3b82f6;
+    text-decoration: underline;
+
+    &:hover {
+      color: #2563eb;
+    }
+  }
+
+  // 테이블 스타일
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e2e8f0;
+    margin: 16px 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.5;
+
+    td,
+    th {
+      border: 1px solid #e2e8f0;
+      padding: 8px;
+    }
+
+    th {
+      font-weight: bold;
+      background-color: #f8fafc;
+    }
+  }
+
+  // 인라인 코드 스타일
+  code {
+    background-color: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+
+  // 코드 블록 스타일
+  pre {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 16px 0;
+
+    code {
+      background-color: transparent;
+      padding: 0;
+      color: inherit;
+    }
+  }
+
+  // 인용문 스타일
+  blockquote {
+    border-left: 4px solid #3b82f6;
+    padding-left: 16px;
+    margin: 16px 0;
+    color: #64748b;
+    font-style: italic;
+  }
+
+  // 구분선 스타일
+  hr {
+    border: none;
+    border-top: 2px solid #e2e8f0;
+    margin: 24px 0;
+  }
+
+  // 강조 텍스트
+  strong,
+  b {
+    font-weight: bold;
+  }
+
+  em,
+  i {
+    font-style: italic;
+  }
+
+  u {
+    text-decoration: underline;
+  }
+
+  s,
+  strike {
+    text-decoration: line-through;
+  }
+}

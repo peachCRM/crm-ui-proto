@@ -1,0 +1,220 @@
+
+@theme {
+  /* 배경 이미지 */
+  --background-image-gradient-linear: linear-gradient(45deg, #009a6e, #1a7e6a);
+  --border-color-default: #1677ff;
+
+  /* 박스 그림자 */
+  --shadow-custom006: 0 0 6px rgba(0, 0, 0, 0.1);
+  --shadow-custom0010: 0 0 10px rgba(0, 0, 0, 0.1);
+  --shadow-custom020: 0 2px 0 #fafafa;
+  --shadow-custom020_dark: 0 2px 0 #0a0a0a;
+  --shadow-custom04100: 0 4px 10px rgba(0, 0, 0, 0.1);
+  --shadow-custom04100_dark: 0 4px 10px #0a0a0a;
+
+  /* 컬러 설정 */
+  --color-default: #444444;
+  --color-base: #333333;
+
+  --color-signPrimary: #013091;
+  --color-signBgPrimary: #f8f9fd;
+  --color-signHeadPrimary: #1f1f1f;
+  --color-signBtnPrimary: #2662e9;
+  --color-signBtnSecondary: #497ff5;
+  --color-signBoardSecondary: #d9d9d9;
+  --color-signBorderPrimary: #bebebe;
+
+  --color-customGrayFaf: #fafafc;
+  --color-customGray959: #959595;
+  --color-customGrayEce: #ececec;
+  --color-customGray595: #595959;
+  --color-customGray1f1: #1f1f1f;
+  --color-customGrayEFE: #efefef;
+  --color-customgray8c8: #8c8c8c;
+  --color-customGraye4: #e4e4e4;
+  --color-customGray999: #999999;
+  --color-customGray8c: #8c8c8c;
+
+  --color-customBlack000: #000000;
+  --color-customBlack222: #222222;
+  --color-customBlack333: #333333;
+  --color-customBlack444: #444444;
+  --color-customBlack555: #555555;
+  --color-customBlack666: #666666;
+  --color-customBlack1D1: #1d1d1d;
+
+  --color-customBlueFirst: #1f5ce4;
+  --color-customBlueEnd: #1d95f1;
+  --color-customBlue266: #2662e9;
+  --color-customBlue0d4: #0d4cd9;
+  --color-customBlue167: #1677ff;
+  --color-customBlue3D7: #3d72ea;
+
+  --color-customSkyBlue1: #e6f4ff;
+  --color-customSkyBlue2: #4096ff;
+  --color-customSkyBlue3: #91caff;
+
+  --color-customVioletPrimary: #4096ff;
+  --color-colorPrimary: #4096ff;
+
+  --color-borderGray888: #888888;
+  --color-borderGray: #9d9d9d;
+  --color-bodyBg: #f0f2f5;
+  --color-sideMenuBg: #fafafa;
+
+  --color-black141414: #141414;
+  --color-black272727: #272727;
+  --color-black111a2c: #111a2c;
+  --color-black3c89e8: #3c89e8;
+
+  --color-graya6a6a6: #a6a6a6;
+  --color-gray727272: #727272;
+  --color-grayd9d9d9: #d9d9d9;
+  --color-gray404040: #404040;
+  --color-gray424242: #424242;
+  --color-gray303030: #303030;
+  --color-grayf5f5f5: #f5f5f5;
+  --color-graybfbfbf: #bfbfbf;
+  --color-grayf0f0f0: #f0f0f0;
+  --color-grayfafafa: #fafafa;
+
+  --color-redFF4: #ff4d4f;
+  --color-redFFF: #fff2f0;
+  --color-redFFC: #ffccc7;
+  --color-redF52: #f5222d;
+
+  --color-yellowFAA: #faad14;
+  --color-green52C: #52c41a;
+  --color-orangeFB9: #fb923c;
+
+  --text-color-default : #000000;
+
+  /* 폰트 크기 */
+  --text-fontsize8: 0.5rem; /* 8px */
+  --text-fontsize10: 0.625rem; /* 10px */
+  --text-fontsize12: 0.75rem; /* 12px */
+  --text-fontsize14: 0.875rem; /* 14px */
+  --text-fontsize16: 1rem; /* 16px */
+  --text-fontsize18: 1.125rem; /* 18px */
+  --text-fontsize20: 1.25rem; /* 20px */
+  --text-fontsize24: 1.5rem; /* 24px */
+  --text-fontsize28: 1.75rem; /* 28px */
+
+  --text-signHead: 1.875rem; /* 30px */
+  --text-signHead_sm: 2.25rem; /* 36px */
+
+  --text-customBase: 0.875rem; /* 14px */
+  --text-customBase_sm: 1rem; /* 16px */
+
+  --text-customSize14: 0.75rem; /* 12px */
+  --text-customSize14_sm: 0.875rem; /* 14px */
+
+  --text-customSize15: 0.875rem; /* 14px */
+  --text-customSize15_sm: 0.9375rem; /* 15px */
+
+  --text-customSize17: 0.875rem; /* 14px */
+  --text-customSize17_sm: 1.0625rem; /* 17px */
+
+  --text-customSize18: 1rem; /* 16px */
+  --text-customSize18_sm: 1.125rem; /* 18px */
+
+  --text-customSize20: 1.125rem; /* 18px */
+  --text-customSize20_sm: 1.25rem; /* 20px */
+
+  --text-customSize22: 1.25rem; /* 20px */
+  --text-customSize22_sm: 1.375rem; /* 22px */
+
+  --text-customSize24: 1.375rem; /* 22px */
+  --text-customSize24_sm: 1.5rem; /* 24px */
+
+  --text-customSize26: 1.5rem; /* 24px */
+  --text-customSize26_sm: 1.625rem; /* 26px */
+
+  --text-customSize28: 1.5rem; /* 24px */
+  --text-customSize28_sm: 1.75rem; /* 28px */
+
+  --text-customSize30: 1.5rem; /* 24px */
+  --text-customSize30_sm: 1.875rem; /* 30px */
+
+  --text-customSize32: 1.75rem; /* 28px */
+  --text-customSize32_sm: 2rem; /* 32px */
+
+  --text-customSize38: 1.5rem; /* 24px */
+  --text-customSize38_sm: 2.375rem; /* 38px */
+
+  --text-customSize48: 1.75rem; /* 28px */
+  --text-customSize48_sm: 2.5rem; /* 40px */
+  --text-customSize48_lg: 3rem; /* 48px */
+
+  /* 줄 높이 */
+  --leading-line20: 1.25rem; /* 20px */
+  --leading-line22: 1.375rem; /* 22px */
+  --leading-line32: 2rem; /* 32px */
+  --leading-line130: 1.3; /* 130% */
+
+  --leading-signHead: 2.625rem; /* 42px */
+  --leading-signHead_sm: 3rem; /* 48px */
+  --leading-signInfo: 1.75rem; /* 28px */
+
+  --leading-customLine24: 1.25rem; /* 20px */
+  --leading-customLine24_sm: 1.5rem; /* 24px */
+
+  --leading-customLine30: 1.5rem; /* 24px */
+  --leading-customLine30_sm: 1.875rem; /* 30px */
+
+  --leading-customLine32: 1.75rem; /* 28px */
+  --leading-customLine32_sm: 2rem; /* 32px */
+
+  --leading-customLine34: 1.875rem; /* 30px */
+  --leading-customLine34_sm: 2.125rem; /* 34px */
+
+  --leading-customLine45: 2.5rem; /* 40px */
+  --leading-customLine45_sm: 2.8125rem; /* 45px */
+
+  /* 폰트 패밀리 */
+  --font-base: 'Pretendard', 'Roboto', 'Arial';
+  --font-customFamily: 'Roboto', 'Arial';
+  --font-circleNumber: 'Noto Sans KR', 'Pretendard', 'Roboto', 'Arial';
+
+  /* 테두리 너비 */
+  --border-width-1: 1px;
+
+  /* 테두리 둥글기 */
+  --radius-custom4: 4px;
+  --radius-custom6: 6px;
+  --radius-custom8: 8px;
+  --radius-custom10: 10px;
+  --radius-custom16: 16px;
+  --radius-custom20: 20px;
+  --radius-custom30: 30px;
+  --radius-customHalf: 50%;
+
+  /* 글자 간격 */
+  --tracking-normal: 0;
+
+  /* 컨테이너 */
+  --container-padding: 1rem;
+
+  /* 연한 파란색(#4096ff) 팔레트 정의 */
+  
+  --color-customblue-50: #f0f7ff;
+  --color-customblue-100: #e0efff;
+  --color-customblue-200: #baddff;
+  --color-customblue-300: #7cc4ff;
+  --color-customblue-400: #4096ff;  /* 기준 색상 */
+  --color-customblue-500: #2563eb;
+  --color-customblue-600: #1d4ed8;
+  --color-customblue-700: #1e40af;
+  --color-customblue-800: #1e3a8a;
+  --color-customblue-900: #1e3a8a;
+  --color-customblue-950: #172554;
+}
+
+:root {
+  /* primary 색상을 커스텀 파란색으로 설정 */
+  --ui-primary: var(--color-customblue-400);
+}
+
+.dark {
+  --ui-primary: var(--color-customblue-300);
+}

@@ -1,0 +1,31 @@
+﻿/**
+ * 플랫폼 코드 그룹
+ */
+export class PlatformCodeGroup {
+    static TAXI_CLIENT_DIVISION = 'TAXI_CLIENT_DIVISION'; // 수임업체 구분코드
+    static TAXI_CLIENT_BIZ_TYPE = 'TAXI_CLIENT_BIZ_TYPE'; // 수임업체 개인/법인
+    static TAXI_CLIENT_CHARGE = 'TAXI_CLIENT_CHARGE'; // 수임업체 기장료_결제방법코드
+
+    static TAXI_CLIENT_DOC_CATEGORY = 'TAXI_CLIENT_DOC_CATEGORY'; // 수임업체 문서 분류
+
+    static TAXI_MEMO_CATEGORY = 'TAXI_MEMO_CATEGORY'; // 메모 분류
+    static TAXI_CALENDAR_CATEGORY = 'TAXI_CALENDAR_CATEGORY'; // 일정 분류
+
+    static TAXI_UNPAID_DEMAND_DIVISION = 'TAXI_UNPAID_DEMAND_DIVISION'; // 미수관리 청구구분
+    static TAXI_UNPAID_RECEIPT_DIVISION = 'TAXI_UNPAID_RECEIPT_DIVISION'; // 미수관리 수납구분
+
+    static TAXI_SINGO_DATA_WAY = 'TAXI_SINGO_DATA_WAY'; // 신고현황 자료수취방법
+    static TAXI_SINGO_PAYMENT_WAY = 'TAXI_SINGO_PAYMENT_WAY'; // 신고현황 납부안내방법
+    static TAXI_SINGO_BILL_CODE = 'TAXI_SINGO_BILL_CODE'; // 신고현황 영수증발급
+
+    static TAXI_SINGO_PAY_STATE = 'TAXI_SINGO_PAY_STATE'; // 신고현황 원천세 상태
+    static TAXI_SINGO_PAY_CATEGORY = 'TAXI_SINGO_PAY_CATEGORY'; // 신고현황 원천세 분류
+    static TAXI_SINGO_ADDITIONAL_STATE = 'TAXI_SINGO_ADDITIONAL_STATE'; // 신고현황 부가세 상태
+    static TAXI_SINGO_ADDITIONAL_CATEGORY = 'TAXI_SINGO_ADDITIONAL_CATEGORY'; // 신고현황 부가세 분류
+    static TAXI_SINGO_CORPORATE_STATE = 'TAXI_SINGO_CORPORATE_STATE'; // 신고현황 법인세 상태
+    static TAXI_SINGO_CORPORATE_CATEGORY = 'TAXI_SINGO_CORPORATE_CATEGORY'; // 신고현황 법인세 분류
+    static TAXI_SINGO_INCOME_STATE = 'TAXI_SINGO_INCOME_STATE'; // 신고현황 종소세 상태
+    static TAXI_SINGO_INCOME_CATEGORY = 'TAXI_SINGO_INCOME_CATEGORY'; // 신고현황 종소세 분류
+
+    static CORPBBS_CODE_DIVISION = 'CORPBBS_CODE_DIVISION'; // 사내게시판 분류 구분
+}
