@@ -1,0 +1,35 @@
+---
+description: 감사(Audit) 칼럼 규칙
+globs: /
+alwaysApply: true
+---
+# 감사(Audit) 칼럼
+
+- Auditing 기능
+- 오디트 트레일(audit trail) 또는 **오디트 로그(audit log)
+
+## 감사(Audit) 칼럼 종류
+다음은 시스템에서 사용되는 감사(audit) 칼럼의 종류입니다:
+- is_view, is_use, is_delete
+- use_yn, del_yn
+- insert_seq, insert_date
+- update_seq, update_date
+- reg_id, reg_date
+- upt_id, upd_date
+
+## 감사(Audit) 칼럼 처리
+- is_view
+  - api : /view
+  - store 함수명 : updateView
+- is_use
+  - api : /use
+  - store 함수명 : updateUse
+- use_yn
+  - api : /use
+  - store 함수명 : updateUse
+- is_delete
+  - api : /delete
+  - store 함수명 : softDelete
+- del_yn
+  - api : /delete
+  - store 함수명 : softDelete

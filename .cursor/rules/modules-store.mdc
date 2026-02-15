@@ -1,0 +1,16 @@
+---
+description: 스토어 가이드 라인
+globs: /
+alwaysApply: true
+---
+
+# 스토어 가이드 라인
+
+- /src/modules/test-data/store/test-data.store.ts 파일 형식 참고
+- 모든 api 통신은 ~/modules/common/service/api.services.ts useApi 사용
+- **Store**는 전역적으로 반영해야 하는 변수를 관리할 때 사용합니다.
+- **Store**는 Option API 방식으로 코딩해야 합니다.\*\*\*\*
+- 모든 REST API 호출은 **store 클래스**를 통해 이루어져야 합니다.
+- 콤포넌트에서 API를 통해 조회 하는 데이터는(list, detail) 상태 변수로 관리
+- 등록, 수정, 삭제 기능은 콤포넌트에서 파라미터로 전달 받아 처리
+- 이 방식은 테스트 주도 개발(TDD)을 용이하게 하고, API 함수 호출 위치를 명확하게 합니다.

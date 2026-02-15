@@ -1,0 +1,35 @@
+{
+  "conventions": {
+    "naming": {
+      "module": "kebab-case",
+      "file": "kebab-case",
+      "class": "PascalCase",
+      "type": "PascalCase"
+    },
+    "frontend": {
+      "framework": "vue3 + pinia",
+      "ui": "nuxt-ui + tailwindcss",
+      "storeStyle": "option-api",
+      "componentStyle": "composition-api"
+    }
+  },
+  "templates": {
+    "frontendStore": "src/modules/test-data/store/",
+    "frontendUI": {
+      "crud": "src/modules/test-data/pages/crud/",
+      "twoDepth": "src/modules/test-data/pages/two-depth/",
+      "selectList": "src/modules/test-data/pages/select-list/"
+    }
+  },
+  "scripts": {
+    "testFrontend": "npx vitest run",
+    "lintFrontend": "bun run lint:fix",
+    "buildFrontend": "bun run build",
+    "typecheckFrontend": "npx vue-tsc --noEmit"
+  },
+  "workflow": {
+    "prdPath": "docs/workflow/plans/active/",
+    "promptsPath": "docs/prompts/",
+    "promptLogsPath": "docs/prompt-logs/"
+  }
+}

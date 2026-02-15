@@ -1,0 +1,8 @@
+---
+description: Pages 라우팅
+globs: /
+alwaysApply: true
+---
+
+- /src/modules/test-data/pages/test.routes.ts를 참고
+- routes 파일 생성 후 /src/router.ts에 추가

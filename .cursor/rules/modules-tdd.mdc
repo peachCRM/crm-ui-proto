@@ -1,0 +1,23 @@
+---
+description: TDD 생성 규칙
+globs: /
+alwaysApply: true
+---
+
+# TDD 작성
+
+- /src/modules/test-data/test/test-data.test.ts 파일 형식 참고
+- 테스트 레이어는 store의 RestAPI의 TDD를 담당 합니다.
+- crud를 기본 테스트로 작성 한다.
+
+## tdd jest 실행
+
+### 테스트 실행
+
+- 작업된 코드에 대해 테스트 할때는 추가된 테스트 케이스만 실행 한다.
+
+### 실행 명령어
+
+```
+npx vitest [tdd ts 파일] -t "실행 테스트 케이스"
+```

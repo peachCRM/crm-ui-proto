@@ -1,0 +1,65 @@
+---
+description: 콤포넌트 가이드 라인
+globs: /
+alwaysApply: true
+---
+
+# 콤포넌트 이름
+- **파일 이름**: 컴포넌트 이름과 동일하게 작성합니다. 예: `member-list.vue`, `member-detail.vue`.
+- **컴포넌트 이름**: `Kebab-case`로 작성합니다. 예: `member-list`, `member-detail`.
+- import 시에는 PascalCase로 사용합니다. 예: `import MemberList from './member-list.vue'`.
+
+# 🔄 화면에서의 Props와 Emit
+
+- **단순 데이터**: 간단한 변수나 플래그는 props와 emit을 사용하세요.
+- **복잡한 데이터**: 복잡한 데이터 구조(검색 파라미터, 등록/수정 데이터 등)는 store를 활용하세요.
+
+```vue
+<!-- 간단한 props/emit 예시 -->
+<template>
+  <child-component :isActive="isActive" @update:active="(value) => (isActive = value)" />
+</template>
+
+<!-- 복잡한 데이터는 store 사용 -->
+<script setup>
+  const memberStore = useMemberStore();
+  // 검색, 등록, 수정 등의 복잡한 로직은 store를 통해 처리
+</script>
+```
+
+# 🪟 모달 사용법
+
+모달은 UModal 컴포넌트를 사용하여 구현합니다.
+
+```vue
+<template>
+  <!-- 모달 사용 예시 -->
+  <UModal v-model:open="isOpenUpdate" title="수정">
+    <template #body>
+      <!-- 모달 내용 -->
+      <member-form :member="selectedMember" @submit="updateMember" />
+    </template>
+    <template #footer>
+      <u-button @click="closeModal">취소</u-button>
+      <u-button color="primary" @click="confirmUpdate">확인</u-button>
+    </template>
+  </UModal>
+</template>
+
+<script setup>
+  const isOpenUpdate = ref(false);
+
+  function openUpdateModal() {
+    isOpenUpdate.value = true;
+  }
+
+  function closeModal() {
+    isOpenUpdate.value = false;
+  }
+
+  function confirmUpdate() {
+    // 업데이트 로직
+    closeModal();
+  }
+</script>
+```

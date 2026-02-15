@@ -1,0 +1,105 @@
+---
+description: tailwindcss 가이드 라인
+globs: /
+alwaysApply: true
+---
+# TailwindCSS 가이드라인
+
+## 기본 원칙
+
+### 1. Utility-First 접근
+- TailwindCSS utility 클래스를 우선적으로 사용
+- 커스텀 CSS는 꼭 필요한 경우에만 사용
+- `tailwind.config.js`의 design token 활용
+
+### 2. 클래스 작성 순서
+레이아웃 → 타이포그래피 → 색상 → 상태
+1. Layout: flex, grid, display, position, spacing (margin, padding)
+2. Box Model: width, height, border, radius
+3. Typography: text-size, text-color, font-weight
+4. Visual: bg-color, shadow, opacity
+5. State: hover:, focus:, active:, disabled:
+6. Animation & Transition: transition, duration, ease, animate
+
+```html
+<div class="flex items-center gap-4 w-full p-4 rounded-lg text-sm text-gray-900 bg-white hover:bg-gray-50 transition-shadow">
+```
+
+## 가독성 규칙
+
+### 5개 이상의 클래스 사용 시
+배열을 사용하여 그룹별로 분리:
+
+```vue
+<template>
+  <div :class="[
+    'flex items-center gap-4 p-6',
+    'bg-white rounded-lg border',
+    'hover:shadow-md transition-shadow'
+  ]">
+  </div>
+</template>
+```
+
+### 그룹핑 기준
+1. **레이아웃**: `flex`, `grid`, `w-full`, `h-auto`, `p-4`, `m-2`
+2. **스타일링**: `bg-white`, `text-gray-900`, `border`, `rounded-lg`
+3. **상태**: `hover:`, `focus:`, `active:`, `disabled:`
+
+## 프로젝트 컨벤션
+
+### 다크모드 지원
+```html
+<div class="bg-white dark:bg-black141414">
+```
+
+### 반응형 디자인
+모바일 우선 접근:
+```html
+<div class="flex flex-col md:flex-row gap-4">
+```
+
+### 색상 시스템
+프로젝트 정의 색상 사용:
+- `bg-bodyBg` (배경색)
+- `btn_primary_md` (버튼 색상)
+- `rounded-custom8` (사용자 정의 라운드)
+
+### 간결한 예시
+```vue
+<template>
+  <button :class="[
+    'flex items-center gap-2 px-4 py-2',
+    'bg-blue-500 text-white rounded-lg',
+    'hover:bg-blue-600 transition-colors'
+  ]">
+    검색
+  </button>
+</template>
+```
+
+## 성능 최적화
+
+### 정적 클래스와 동적 클래스 분리
+```vue
+<template>
+  <div 
+    class="flex items-center gap-2 p-4"
+    :class="{ 'bg-blue-50': isActive }"
+  >
+  </div>
+</template>
+```
+
+### 조건부 스타일링
+```vue
+<template>
+  <div :class="[
+    'base-styles',
+    { 'active-styles': isActive },
+    size === 'large' ? 'large-styles' : 'default-styles'
+  ]">
+  </div>
+</template>
+```
+

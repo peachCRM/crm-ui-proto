@@ -1,0 +1,17 @@
+# 개발 가이드라인
+
+## 가이드라인 문서 링크
+
+1. [기본 가이드](./.cursor/rules/default-guide.mdc)
+2. [컴포넌트 가이드](./.cursor/rules/components-guide.mdc)
+3. [타입 가이드](./.cursor/rules/modules-type.mdc)
+4. [스토어 가이드](./.cursor/rules/modules-store.mdc)
+5. [CRUD 가이드](./.cursor/rules/modules-crud.mdc)
+6. [에러 처리 가이드](./.cursor/rules/error-guide.mdc)
+7. [감사 칼럼 가이드](./.cursor/rules/modules-audit.mdc)
+8. [TDD 가이드](./.cursor/rules/modules-tdd.mdc)
+9. [Validator 가이드](./.cursor/rules/modules-validator.mdc)
+10. [페이지 라우팅 가이드](.././.cursor/rules/page-routing.mdc)
+11. [Tailwind CSS 가이드](./.cursor/rules/tailwindcss-guide.mdc)
+
+항상 한국어로 응답하세요

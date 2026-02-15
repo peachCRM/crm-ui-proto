@@ -1,0 +1,8 @@
+---
+description: vaildator 생성 규칙
+globs: /
+alwaysApply: true
+---
+# vaildator 작성
+
+- database 컬럼 주석(COMMENT)이 `삭제`로 된 칼럼은 제외

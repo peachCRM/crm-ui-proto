@@ -1,0 +1,74 @@
+name: Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get version from dev
+        id: get_version
+        run: |
+          # dev 브랜치의 최신 버전 태그 가져오기
+          latest_tag=$(git tag -l "v*.*.*-dev" | sort -V | tail -n 1)
+          if [ -z "$latest_tag" ]; then
+            echo "VERSION=v0.1.0" >> $GITHUB_ENV
+          else
+            # -dev 접미사 제거
+            version=$(echo $latest_tag | sed 's/-dev$//')
+            echo "VERSION=$version" >> $GITHUB_ENV
+          fi
+
+      - name: Create prod tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          prod_tag="${{ env.VERSION }}-prod"
+          git tag -a $prod_tag -m "Production release $prod_tag"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git push origin $prod_tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get changes from dev
+        id: get_changes
+        run: |
+          # dev 태그의 변경사항 가져오기
+          dev_tag="${{ env.VERSION }}-dev"
+          # dev 태그의 릴리즈 노트에서 변경사항 섹션 추출
+          changelog=$(gh release view $dev_tag --json body -q .body | sed -n '/### 변경 사항/,$p')
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$changelog" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}-prod
+          name: "Production Release ${{ env.VERSION }}-prod"
+          body: |
+            ## 🚀 운영 서버 배포
+
+            ### 변경 사항
+            ${{ env.CHANGELOG }}
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 여기에 실제 운영 서버 배포 단계 추가
+      - name: Deploy to production server
+        run: |
+          echo "Deploying to production server..."
+          # 실제 배포 스크립트 추가 필요 

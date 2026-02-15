@@ -1,0 +1,117 @@
+---
+description: 기본 코딩 가이드 라인
+globs: /
+alwaysApply: true
+---
+
+# 변수명 규칙
+
+- 카켈 케이스(camelCase) 사용
+
+# 파일 및 폴더 작성 규칙
+
+- 모든 파일은 명확한 접미사를 사용하여 그 용도를 쉽게 식별할 수 있도록 합니다.
+  - 상태관리: `.store.ts` (예: `member.store.ts`)
+  - 타입정의: `.type.ts` (예: `member.type.ts`)
+- 파일명은 **케밥 케이스(kebab-case)** 로 작성합니다.
+- 폴더명도 **케밥 케이스(kebab-case)** 로 작성합니다.
+
+## 파일이름
+
+- /list/list.vue
+- /list/list-search.vue
+- /list/list-table.vue
+- /detail/detail.vue
+- /detail/detail-editor.vue
+- /detail/detail-file.vue
+- /insert/insert.vue
+- /insert/insert-editor.vue
+- /insert/insert-file.vue
+- /update/update.vue
+- /update/update-editor.vue
+- /update/update-file.vue
+
+# 함수명
+
+- list, insert, update, delete 등과 같은 CRUD 관련 함수는 각각의 동작을 명확히 나타내는 이름으로 작성합니다.
+- 예시: `listMembers`, `insertMember`, `updateMember`, `deleteMember`
+- 함수명은 동사로 시작하고, 그 뒤에 명사(대상)를 붙여서 작성합니다.
+- 예시: `fetchUserData`, `saveUserSettings`, `deleteUserAccount`
+- 함수명은 동작을 명확히 나타내는 이름으로 작성합니다.
+- 예시: `calculateTotalPrice`, `validateFormInput`, `formatDateString`
+
+## 프론트 함수명
+
+- 함수명 기본 Rule(/src/modules/test-data 모듈 폴더의 vue파일과 store 파일 참고)
+- list-search.vue : listAction(),
+- list-table.vue : goDetail(), goInsert(), goUpdate(), remove(), removeCheck(), updateSort()
+- list-table.vue : listMovePage(), listAction(), getList()
+- detail.vue : goUpdate(), remove(), close(), getDetail()
+- insert.vue : register(), close()
+- update.vue : register(), close(), getDetail()
+- store : listParamsInit(), list(), detail(), insert(), update(), updateUse(), softDelete()
+
+# UI 개발기준
+
+- 모든 UI는 최신 스타일로 작성 (NUxt UI v3, Tailwind css 4적용)
+- 모바일 & 데스크톱 반응형 디자인 필수
+- 유지보수성과 확장성으로 고려 합니다.
+
+# Option API, Composition API
+
+- store 파일은 Option API 방식으로 코딩
+- vue 파일은 Composition API 방식으로 코딩
+
+# 폴더 구조
+
+프로젝트는 다음과 같은 폴더 구조를 따릅니다:
+
+```
+src/
+├── modules/                    # 기능별 모듈
+│   ├── common/                  # 공통 기능
+│   ├── member/                  # 회원 기능
+│   │   ├── pages/               # 화면 콤포넌트
+│   │   │   ├── list.vue         # 리스트 메인 화면
+│   │   │   ├── list-search.vue  # 리스트 검색 컴포넌트
+│   │   │   ├── list-table.vue   # 리스트 테이블 컴포넌트
+│   │   │   ├── detail.vue       # 상세 화면
+│   │   │   ├── insert.vue       # 등록 화면
+│   │   │   └── update.vue       # 수정 화면
+│   │   ├── store/               # 상태 관리
+│   │   ├── type/                # 타입 정의
+│   │   └── test/                # 테스트 코드
+└── app.vue                      # 앱 진입점
+```
+
+- **modules 폴더**: 기능별로 분리된 모듈이 위치 합니다. 각 모듈은 다음 구조를 가집니다.
+  - **pages**: 화면 UI 컴포넌트가 위치합니다.
+  - **store**: 스토어(상태변수, Rest API 호출)
+  - **type**: 해당 모듈에서 사용하는 인터페이스와 타입 정의 파일이 위치합니다.
+  - **test**: 모듈별 단위 테스트 파일이 위치합니다.
+
+# 데이터베이스 주석 활용
+
+## 기본 원칙
+
+- 프론트엔드 개발 시 데이터베이스의 테이블 및 컬럼 COMMENT를 일관되게 활용한다.
+- 백엔드에서 정의된 주석 정보를 프론트엔드 코드에 반영하여 일관성을 유지한다.
+
+## 적용 대상
+
+- 타입 정의(Type): 데이터 모델 인터페이스/타입 선언 시 database 컬럼 주석을 JSDoc 주석으로 반영
+- 상태 관리(Store): 상태 변수 정의 시 관련 database 컬럼 주석 정보 활용
+- 유효성 검사(Validator): 폼 유효성 검사 규칙 작성 시 database 제약사항과 주석 정보 반영
+- CRUD 화면: 목록, 상세, 등록, 수정 화면에서 레이블, 플레이스홀더, 툴팁 등에 database 컬럼 주석 정보 활용
+  - 목록 화면: 테이블 컬럼 헤더 타이틀 및 설명으로 활용
+  - 상세 화면: 필드 레이블 및 값 설명으로 활용
+  - 입력 폼: 입력 필드 레이블, 플레이스홀더, 도움말 텍스트로 활용
+  - 컬럼 주석 내용에 따라 적절한 UI 컴포넌트 선택 (예: '여부' 포함 시 스위치 컴포넌트 사용)
+
+## 적용 방법
+
+- API 응답으로 받은 스키마 정보나 별도 제공되는 database 문서를 참조하여 주석 정보 확인
+- 코드 생성기(Code Generator)를 사용할 경우 database 주석이 자동으로 반영되도록 설정
+- 변경된 database 주석이 있을 시 관련 프론트엔드 코드의 주석도 함께 업데이트
+- CRUD 화면 개발 시 database 스키마 문서를 참조하여 각 필드의 주석 정보를 UI 요소에 일관되게 적용
+- 주석 내용이 너무 길거나 복잡한 경우, 핵심 내용은 레이블로, 상세 설명은 툴팁이나 도움말로 분리하여 제공

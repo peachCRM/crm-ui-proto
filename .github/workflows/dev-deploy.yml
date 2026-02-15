@@ -1,0 +1,81 @@
+name: Development Deployment
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get latest version
+        id: get_version
+        run: |
+          # 최신 dev 태그 가져오기
+          latest_tag=$(git tag -l "v*.*.*-dev" | sort -V | tail -n 1)
+          if [ -z "$latest_tag" ]; then
+            echo "VERSION=v0.1.0" >> $GITHUB_ENV
+          else
+            # 버전 번호 증가
+            version=$(echo $latest_tag | sed 's/-dev$//')
+            major=$(echo $version | cut -d. -f1 | tr -d 'v')
+            minor=$(echo $version | cut -d. -f2)
+            patch=$(echo $version | cut -d. -f3)
+            patch=$((patch + 1))
+            new_version="v$major.$minor.$patch"
+            echo "VERSION=$new_version" >> $GITHUB_ENV
+          fi
+
+      - name: Create dev tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          dev_tag="${{ env.VERSION }}-dev"
+          git tag -a $dev_tag -m "Development release $dev_tag"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git push origin $dev_tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get merged PRs
+        id: get_prs
+        run: |
+          # 이전 태그부터 현재까지의 커밋 메시지에서 PR 번호 추출
+          previous_tag=$(git tag -l "v*.*.*-dev" | sort -V | tail -n 2 | head -n 1)
+          if [ -z "$previous_tag" ]; then
+            # 첫 배포인 경우
+            changelog=$(git log --pretty=format:"- %s")
+          else
+            changelog=$(git log $previous_tag..HEAD --pretty=format:"- %s")
+          fi
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$changelog" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}-dev
+          name: "Development Release ${{ env.VERSION }}-dev"
+          body: |
+            ## 🚀 개발 서버 배포
+
+            ### 변경 사항
+            ${{ env.CHANGELOG }}
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 여기에 실제 개발 서버 배포 단계 추가
+      - name: Deploy to dev server
+        run: |
+          echo "Deploying to dev server..."
+          # 실제 배포 스크립트 추가 필요 

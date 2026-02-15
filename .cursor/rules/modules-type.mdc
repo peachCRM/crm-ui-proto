@@ -1,0 +1,95 @@
+---
+description: type interface 생성 규칙
+globs: /
+alwaysApply: true
+---
+
+# 타입 설정 가이드라인
+
+- /src/modules/test-data/type/test-data.type.ts 파일 형식 참고
+- database 컬럼 주석(COMMENT)이 `삭제`로 된 칼럼은 제외
+- Database, if there are fields with column 'COMMENT' set to '삭제', make sure it is excluded from typing
+- 옵셔널 타입(`?`) 사용하지 않기
+- `null` 타입 허용하지 않기
+- `undefined` 타입 허용하지 않기
+- 주석은 필드의 왼쪽에 배치 하기(개발자 가독성 향상)
+
+## 올바른 타입 정의 방법
+
+```typescript
+// ❌ 잘못된 방법
+interface BadExample {
+  test?: number | null; // 옵셔널 타입과 null 사용
+  name?: string; // 옵셔널 타입 사용
+  flag: boolean | null; // null 타입 허용
+}
+
+// ✅ 올바른 방법
+interface GoodExample {
+  test: number; //test
+  name: string; //이름
+  flag: boolean; //구분
+}
+```
+
+## 타입 인터페이스 구조
+
+- 모든 테이블에 대해 다음 인터페이스 생성:
+  - `[테이블명]`
+  - `[테이블명]PagingDto`
+  - `[테이블명]InsertDto`
+  - `[테이블명]UpdateDto`
+- 모든 필드는 필수값으로 처리
+
+## 감사(audit) 칼럼 배치 순서
+
+- 인터페이스 정의에서 감사(audit) 관련 필드는 항상 제일 마지막에 배치합니다.
+- 다음 필드들은 감사 필드로 간주하고 인터페이스 정의의 마지막 부분에 배치합니다:
+  - isView, isUse, isDelete
+  - useYn, delYn
+  - insertSeq, insertDate
+  - updateSeq, updateDate
+  - regId, regDate
+  - uptId, updDate
+
+```typescript
+// 올바른 인터페이스 필드 순서 예시
+export interface Example {
+  // 비즈니스 필드 먼저
+  id: number;
+  name: string;
+  description: string;
+
+  // 감사 필드 마지막에 배치
+  isView: string;
+  isUse: string;
+  isDelete: string;
+  insertSeq: number;
+  insertDate: string;
+  updateSeq: number;
+  updateDate: string;
+}
+```
+
+## 파일 처리용 Filed 배치 순서
+
+- fileList, imageList Field는 감사 필드 다음에 배치 한다.
+
+```typescript
+// 올바른 인터페이스 필드 순서 예시
+export interface Example {
+  // 비즈니스 필드 먼저
+  id: number;
+  name: string;
+  description: string;
+
+  // 감사 필드 마지막에 배치
+  isDelete: string;
+  insertSeq: number;
+  insertDate: string;
+
+  // 파일
+  fileList: any[]; // 파일 목록
+  imageList: any[]; // 이미지 목록
+}
+```
