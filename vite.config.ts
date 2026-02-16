@@ -3,10 +3,12 @@ import vue from '@vitejs/plugin-vue';
 import ui from '@nuxt/ui/vite';
 import path from 'path';
 import tailwindcssVite from '@tailwindcss/vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    tsconfigPaths(),
     vue(),
     tailwindcssVite(),
     ui({
