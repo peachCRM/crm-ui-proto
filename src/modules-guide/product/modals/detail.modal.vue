@@ -74,7 +74,7 @@
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { FormService } from '@/modules/_common/services/form.service.ts';
-import { useProductStore } from '@/modules/product/store/product.store.ts';
+import { useProductStore } from '@/modules-guide/product/store/product.store.ts';
 
 interface Props {
   open: boolean;

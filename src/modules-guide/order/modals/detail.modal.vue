@@ -129,7 +129,7 @@
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { FormService } from '@/modules/_common/services/form.service.ts';
-import { useOrderStore } from '@/modules/order/store/order.store.ts';
+import { useOrderStore } from '@/modules-guide/order/store/order.store.ts';
 
 interface Props {
   open: boolean;

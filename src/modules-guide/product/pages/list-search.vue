@@ -106,7 +106,7 @@
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import dayjs from 'dayjs';
-import type { ProductSearchDto } from '@/modules/product/type/product.type';
+import type { ProductSearchDto } from '@/modules-guide/product/type/product.type';
 import PDaySelect from '@/modules/_common/components/date-picker/p-day-select.vue';
 import PNuxtSelect from '@/modules/_common/components/forms/p-nuxt-select.vue';
 import PDatePicker from '@/modules/_common/components/date-picker/p-date-picker-work.vue';

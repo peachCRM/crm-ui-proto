@@ -119,8 +119,8 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import dayjs from 'dayjs';
 import { FormService } from '@/modules/_common/services/form.service.ts';
-import { useOrderStore } from '@/modules/order/store/order.store.ts';
-import type { OrderListItem, OrderPagingDto } from '@/modules/order/type/order.type';
+import { useOrderStore } from '@/modules-guide/order/store/order.store.ts';
+import type { OrderListItem, OrderPagingDto } from '@/modules-guide/order/type/order.type';
 import { type Header } from 'vue3-easy-data-table';
 import PNuxtSelect from '@/modules/_common/components/forms/p-nuxt-select.vue';
 

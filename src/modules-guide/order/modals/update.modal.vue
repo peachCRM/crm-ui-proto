@@ -75,7 +75,7 @@ import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { FormService } from '@/modules/_common/services/form.service.ts';
 import type { FormErrorEvent } from '@nuxt/ui';
-import { useOrderStore } from '@/modules/order/store/order.store.ts';
+import { useOrderStore } from '@/modules-guide/order/store/order.store.ts';
 import { OrderUpdateValidator } from './_order.validator.ts';
 import PNuxtSelect from '@/modules/_common/components/forms/p-nuxt-select.vue';
 

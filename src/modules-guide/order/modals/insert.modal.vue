@@ -133,7 +133,7 @@ import { storeToRefs } from 'pinia';
 import dayjs from 'dayjs';
 import { FormService } from '@/modules/_common/services/form.service.ts';
 import type { FormErrorEvent } from '@nuxt/ui';
-import { useOrderStore } from '@/modules/order/store/order.store.ts';
+import { useOrderStore } from '@/modules-guide/order/store/order.store.ts';
 import { OrderInsertValidator } from './_order.validator.ts';
 import PNuxtSelect from '@/modules/_common/components/forms/p-nuxt-select.vue';
 import PInputBox from '@/modules/_common/components/forms/p-input-box.vue';

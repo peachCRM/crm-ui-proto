@@ -107,8 +107,8 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import dayjs from 'dayjs';
 import { FormService } from '@/modules/_common/services/form.service.ts';
-import { useProductStore } from '@/modules/product/store/product.store.ts';
-import type { ProductListItem, ProductPagingDto } from '@/modules/product/type/product.type';
+import { useProductStore } from '@/modules-guide/product/store/product.store.ts';
+import type { ProductListItem, ProductPagingDto } from '@/modules-guide/product/type/product.type';
 import { type Header } from 'vue3-easy-data-table';
 import PNuxtSelect from '@/modules/_common/components/forms/p-nuxt-select.vue';
 

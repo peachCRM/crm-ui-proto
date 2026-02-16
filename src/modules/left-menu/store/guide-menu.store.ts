@@ -9,33 +9,25 @@ import type { LeftMenuState, MenuSection } from '../type/left-menu.interface';
 export const useGuideMenuStore = defineStore('guideMenu', {
   state: (): LeftMenuState => ({
     menuSections: [
-      // ── UI 패턴 섹션 ──
+      // ── UI 가이드 섹션 ──
       {
         id: 100,
-        sectionTitle: 'UI 패턴',
+        sectionTitle: 'UI 가이드',
         menus: [
           {
             id: 101,
-            name: 'CRUD 패턴',
+            name: 'UI 가이드',
             url: '',
-            icon: 'IconTable',
+            icon: 'IconBookOpen',
             hideInProd: false,
             children: [
-              { id: 1011, name: '기본 CRUD', url: '/guide/pattern/crud/list', hideInProd: false },
-              { id: 1012, name: 'CRUD + 엑셀', url: '/guide/pattern/crud-excel/list', hideInProd: false }
-            ]
-          },
-          {
-            id: 102,
-            name: '리스트 패턴',
-            url: '',
-            icon: 'IconList',
-            hideInProd: false,
-            children: [
-              { id: 1021, name: 'Two-Depth', url: '/guide/pattern/two-depth/list', hideInProd: false },
-              { id: 1022, name: '무한 스크롤', url: '/guide/pattern/infinite-scroll-list/list', hideInProd: false },
-              { id: 1023, name: '더보기 목록', url: '/guide/pattern/show-more-list/list', hideInProd: false },
-              { id: 1024, name: '선택 목록', url: '/guide/pattern/select-list/demo', hideInProd: false }
+              { id: 1011, name: '가이드', url: '/guide/pattern/guide', hideInProd: false },
+              { id: 1012, name: 'CRUD 기본', url: '/guide/pattern/crud/list', hideInProd: false },
+              { id: 1013, name: 'CRUD 2depth', url: '/guide/pattern/two-depth/list', hideInProd: false },
+              { id: 1014, name: 'CRUD 엑셀', url: '/guide/pattern/crud-excel/list', hideInProd: false },
+              { id: 1015, name: 'DEMO select-list', url: '/guide/pattern/select-list/demo', hideInProd: false },
+              { id: 1016, name: '더보기 리스트', url: '/guide/pattern/show-more-list/list', hideInProd: false },
+              { id: 1017, name: '무한 스크롤 리스트', url: '/guide/pattern/infinite-scroll-list/list', hideInProd: false }
             ]
           }
         ]

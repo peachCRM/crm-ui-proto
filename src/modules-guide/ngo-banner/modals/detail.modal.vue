@@ -93,7 +93,7 @@ import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import dayjs from 'dayjs';
 import { FormService } from '@/modules/_common/services/form.service.ts';
-import { useNgoBannerStore } from '@/modules/ngo-banner/store/ngo-banner.store.ts';
+import { useNgoBannerStore } from '@/modules-guide/ngo-banner/store/ngo-banner.store.ts';
 
 interface Props {
   open: boolean;

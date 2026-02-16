@@ -6,10 +6,11 @@ import selectListRoutes from './modules/test-data/pages/select-list/_select-list
 import showMoreListRoutes from './modules/test-data/pages/show-more-list/_show-more-list.routes.ts';
 import infiniteScrollListRoutes from './modules/test-data/pages/infinite-scroll-list/_infinite-scroll-list.routes.ts';
 import testCrudExcelRoutes from './modules/test-data/pages/crud-excel/_crud-excel.routes.ts';
+import testTwoDepthRoutes from './modules/test-data/pages/two-depth/_two-depth.routes.ts';
 
 // 가이드 영역 - 도메인 예시 하위 라우트
-import productRoutes from './modules/product/pages/_product.routes.ts';
-import orderRoutes from './modules/order/pages/_order.routes.ts';
+import productRoutes from './modules-guide/product/pages/_product.routes.ts';
+import orderRoutes from './modules-guide/order/pages/_order.routes.ts';
 
 // 인트로/스페이스
 import introRoutes from './modules/intro/pages/_intro.routes.ts';
@@ -85,6 +86,7 @@ const router = createRouter({
               component: () => import('@/modules/test-data/pages/guide.vue')
             },
             testCrudRoutes,
+            testTwoDepthRoutes,
             showMoreListRoutes,
             infiniteScrollListRoutes,
             testCrudExcelRoutes,
@@ -103,7 +105,7 @@ const router = createRouter({
                 {
                   path: 'list',
                   name: 'guide-ngo-banner-list',
-                  component: () => import('@/modules/ngo-banner/pages/list.vue')
+                  component: () => import('@/modules-guide/ngo-banner/pages/list.vue')
                 }
               ]
             }

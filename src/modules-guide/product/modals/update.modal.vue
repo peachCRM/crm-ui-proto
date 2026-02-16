@@ -84,7 +84,7 @@ import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { FormService } from '@/modules/_common/services/form.service.ts';
 import type { FormErrorEvent } from '@nuxt/ui';
-import { useProductStore } from '@/modules/product/store/product.store.ts';
+import { useProductStore } from '@/modules-guide/product/store/product.store.ts';
 import { ProductUpdateValidator } from './_product.validator.ts';
 import PNuxtSelect from '@/modules/_common/components/forms/p-nuxt-select.vue';
 import PInputBox from '@/modules/_common/components/forms/p-input-box.vue';
