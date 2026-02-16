@@ -9,10 +9,10 @@ import type { LeftMenuState, MenuSection } from '../type/left-menu.interface';
 export const useGuideMenuStore = defineStore('guideMenu', {
   state: (): LeftMenuState => ({
     menuSections: [
-      // ── UI 가이드 섹션 ──
+      // ── UI 예시 섹션 ──
       {
         id: 100,
-        sectionTitle: 'UI 가이드',
+        sectionTitle: 'UI 예시',
         menus: [
           {
             id: 101,
@@ -28,6 +28,16 @@ export const useGuideMenuStore = defineStore('guideMenu', {
               { id: 1015, name: 'DEMO select-list', url: '/guide/pattern/select-list/demo', hideInProd: false },
               { id: 1016, name: '더보기 리스트', url: '/guide/pattern/show-more-list/list', hideInProd: false },
               { id: 1017, name: '무한 스크롤 리스트', url: '/guide/pattern/infinite-scroll-list/list', hideInProd: false }
+            ]
+          },
+          {
+            id: 102,
+            name: '메뉴 가이드',
+            url: '',
+            icon: 'IconMenu',
+            hideInProd: false,
+            children: [
+              { id: 1021, name: '메뉴 예시', url: '/guide/pattern/menu-guide', hideInProd: false }
             ]
           }
         ]
@@ -50,10 +60,13 @@ export const useGuideMenuStore = defineStore('guideMenu', {
           },
           {
             id: 202,
-            name: 'NGO 배너',
-            url: '/guide/domain/ngo-banner/list',
+            name: '배너',
+            url: '',
             icon: 'IconHeart',
-            hideInProd: false
+            hideInProd: false,
+            children: [
+              { id: 2021, name: 'NGO 배너', url: '/guide/domain/ngo-banner/list', hideInProd: false }
+            ]
           }
         ]
       }

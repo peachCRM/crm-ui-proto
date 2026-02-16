@@ -85,6 +85,11 @@ const router = createRouter({
               name: 'guide-overview',
               component: () => import('@/modules/test-data/pages/guide.vue')
             },
+            {
+              path: 'menu-guide',
+              name: 'guide-menu-guide',
+              component: () => import('@/modules-guide/menu-guide/menu-guide.vue')
+            },
             testCrudRoutes,
             testTwoDepthRoutes,
             showMoreListRoutes,
