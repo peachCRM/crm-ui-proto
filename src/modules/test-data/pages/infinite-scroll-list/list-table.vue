@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="flex items-center justify-between py-5">
     <div class="flex items-center gap-3">
       <div>총 {{ listData.length }}개의 항목</div>
@@ -281,7 +281,7 @@ watch(
       if (limit) listParams.value.limit = Number(limit);
 
       // 라우트 파라미터가 있고 특정 페이지일 때만 조회
-      if (route.path === '/test/infinite-scroll-list/list') {
+      if (route.path === '/guide/pattern/infinite-scroll-list/list') {
         getList();
       }
     } else {

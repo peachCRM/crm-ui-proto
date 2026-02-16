@@ -1,117 +1,75 @@
 <template>
-  <!-- 컴팩트 메뉴 (축소된 상태) - 아이콘만 표시되고 호버 시 플로팅 메뉴가 나타나는 상태 -->
+  <!-- 컴팩트 메뉴 (축소된 상태) - 아이콘만 표시, 호버 시 3-depth 플로팅 메뉴 -->
   <div class="w-[60px]">
-    <!-- 메뉴 아코디언 컴포넌트 -->
-    <div class="flex flex-col">
-      <template v-for="menuItem in visibleLeftMenus" :key="menuItem.id">
-        <!-- 서브메뉴가 있는 메뉴 -->
-        <template v-if="menuItem.children && menuItem.children.length > 0">
-          <div class="flex flex-col">
-            <!-- 메인 메뉴 아이콘 -->
+    <div class="flex flex-col pt-2">
+      <template v-for="section in visibleSections" :key="section.id">
+        <template v-for="menu in section.menus" :key="menu.id">
+          <!-- 자식이 있는 메뉴 -->
+          <div v-if="menu.children && menu.children.length > 0" class="relative">
             <div
-              class="flex cursor-pointer flex-row items-center justify-between px-5 py-3.5"
-              :class="{
-                'bg-purple-50': isOpen[menuItem.id || 0] || isParentMenuActive(menuItem)
-              }"
-              @mouseenter="handleCompactMenuMouseEnter(menuItem.id || 0)"
-              @mouseleave="handleCompactMenuMouseLeave(menuItem.id || 0)"
-              :ref="(el) => setMenuRef(el, menuItem.id || 0)"
+              class="flex cursor-pointer items-center justify-center px-2 py-3"
+              :class="{ 'bg-blue-50 dark:bg-blue-950/30': isOpen[menu.id] || hasActiveChild(menu) }"
+              @mouseenter="handleMouseEnter(menu.id)"
+              @mouseleave="handleMouseLeave(menu.id)"
+              :ref="(el) => setMenuRef(el, menu.id)"
+              :title="menu.name"
             >
-              <div
-                class="text-fontsize14 text-customGray595 leading-line22 dark:text-graya6a6a6 flex flex-row gap-2.5 font-semibold"
-              >
-                <img
-                  :src="menuItem.src"
-                  :class="{
-                    'text-purple-700': isOpen[menuItem.id || 0] || isParentMenuActive(menuItem)
-                  }"
-                  :alt="menuItem.name"
-                />
-              </div>
+              <component
+                :is="iconMap[menu.icon]"
+                class="w-5 h-5"
+                :class="isOpen[menu.id] || hasActiveChild(menu) ? 'text-[color:var(--ui-primary)]' : 'text-neutral-500'"
+              />
             </div>
 
-            <!-- 플로팅 서브메뉴 -->
-            <div class="relative">
-              <div
-                v-if="isOpen[menuItem.id || 0]"
-                class="dark:bg-black141414 fixed z-[9999] flex min-w-[200px] flex-col rounded-lg border border-gray-200 bg-white py-2 shadow-xl dark:border-gray-700"
-                :style="getMenuPosition(menuItem.id || 0)"
-                @mouseenter="handleSubMenuMouseEnter(menuItem.id || 0)"
-                @mouseleave="handleSubMenuMouseLeave(menuItem.id || 0)"
-              >
-                <!-- 서브메뉴 타이틀 -->
-                <div class="border-b border-gray-200 px-4 py-2 dark:border-gray-700">
-                  <div
-                    class="text-fontsize14 text-customGray595 dark:text-graya6a6a6 font-semibold"
-                  >
-                    {{ menuItem.name }}
-                  </div>
-                </div>
-
-                <!-- 서브메뉴 아이템들 -->
-                <template v-for="child in menuItem.children" :key="child.id">
-                  <router-link
-                    class="cursor-pointer"
-                    :to="child.url"
-                    @click="handleSubMenuClick(menuItem.id || 0)"
-                  >
-                    <div
-                      :class="{
-                        'text-purple-700 bg-purple-50 font-medium': isActive(child.url)
-                      }"
-                      class="text-fontsize14 text-customGray595 leading-line22 hover:text-purple-700 hover:bg-purple-50 dark:hover:bg-black141414 dark:text-graya6a6a6 flex h-10 items-center px-4 transition-colors duration-200 hover:font-medium"
-                    >
-                      {{ child.name }}
-                    </div>
-                  </router-link>
-                </template>
+            <!-- 2차 플로팅 서브메뉴 -->
+            <div
+              v-if="isOpen[menu.id]"
+              class="fixed z-[9999] min-w-[180px] rounded-lg border border-neutral-200 bg-white py-1 shadow dark:border-neutral-700 dark:bg-neutral-900"
+              :style="getMenuPosition(menu.id)"
+              @mouseenter="handleSubMenuEnter(menu.id)"
+              @mouseleave="handleSubMenuLeave(menu.id)"
+            >
+              <!-- 타이틀 -->
+              <div class="border-b border-neutral-200 px-3 py-2 dark:border-neutral-700">
+                <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">{{ menu.name }}</span>
               </div>
-            </div>
-          </div>
-        </template>
-
-        <!-- 서브메뉴가 없는 단일 메뉴 -->
-        <template v-else>
-          <div class="flex flex-col">
-            <!-- 단일 메뉴 아이콘 -->
-            <router-link :to="menuItem.url || ''">
-              <div
-                :class="{ 'bg-purple-50': isActive(menuItem.url) }"
-                class="flex flex-row items-center justify-between px-5 py-3.5 dark:text-[#3C89E8]"
-                :title="menuItem.name"
-                @mouseenter="handleCompactSingleMenuMouseEnter(menuItem.id || 0)"
-                @mouseleave="handleCompactSingleMenuMouseLeave(menuItem.id || 0)"
-                :ref="(el) => setMenuRef(el, menuItem.id || 0)"
+              <!-- 3차 링크 (children의 children이 없으므로 직접 링크) -->
+              <router-link
+                v-for="child in menu.children"
+                :key="child.id"
+                :to="child.url"
+                @click="closeMenu(menu.id)"
               >
                 <div
-                  :class="{ 'text-purple-700': isActive(menuItem.url) }"
-                  class="text-fontsize14 text-customGray595 leading-line22 dark:text-graya6a6a6 flex flex-row gap-2.5 font-semibold"
+                  :class="isActiveUrl(child.url)
+                    ? 'text-[color:var(--ui-primary)] bg-blue-50 font-medium dark:bg-blue-950/30'
+                    : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800'"
+                  class="flex items-center gap-2 h-9 px-3 text-sm transition-colors duration-150"
                 >
-                  <!-- 메뉴 아이콘 이미지 -->
-                  <img :src="menuItem.src" :alt="menuItem.name" />
+                  <span
+                    v-if="isActiveUrl(child.url)"
+                    class="w-1 h-1 rounded-full bg-[color:var(--ui-primary)] shrink-0"
+                  />
+                  {{ child.name }}
                 </div>
-              </div>
-            </router-link>
-
-            <!-- 서브메뉴가 없는 단일 메뉴의 타이틀 표시 (툴팁) -->
-            <div class="relative">
-              <div
-                v-if="showSingleMenuTitle[menuItem.id || 0]"
-                class="dark:bg-black141414 fixed z-[9999] flex min-w-[120px] flex-col rounded-lg border border-gray-200 bg-white py-2 shadow-xl dark:border-gray-700"
-                :style="getMenuPosition(menuItem.id || 0)"
-                @mouseenter="handleSingleMenuTitleMouseEnter(menuItem.id || 0)"
-                @mouseleave="handleSingleMenuTitleMouseLeave(menuItem.id || 0)"
-              >
-                <div class="px-4 py-2">
-                  <div
-                    class="text-fontsize14 text-customGray595 dark:text-graya6a6a6 font-semibold"
-                  >
-                    {{ menuItem.name }}
-                  </div>
-                </div>
-              </div>
+              </router-link>
             </div>
           </div>
+
+          <!-- 자식이 없는 단일 메뉴 -->
+          <router-link v-else :to="menu.url || '/'">
+            <div
+              class="flex cursor-pointer items-center justify-center px-2 py-3"
+              :class="isActiveUrl(menu.url) ? 'bg-blue-50 dark:bg-blue-950/30' : ''"
+              :title="menu.name"
+            >
+              <component
+                :is="iconMap[menu.icon]"
+                class="w-5 h-5"
+                :class="isActiveUrl(menu.url) ? 'text-[color:var(--ui-primary)]' : 'text-neutral-500'"
+              />
+            </div>
+          </router-link>
         </template>
       </template>
     </div>
@@ -119,60 +77,62 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue';
+import { ref, onUnmounted, type Component } from 'vue';
 import { useRoute } from 'vue-router';
-import type { MenuItem, ChildMenuItem } from '../type/left-menu.interface';
+import {
+  IconUsers,
+  IconMessageCircle,
+  IconStretching2 as IconStretching,
+  IconBuilding,
+  IconPhone,
+  IconChartBar,
+  IconSparkles,
+  IconTable,
+  IconList,
+  IconShoppingCart,
+  IconHeart
+} from '@tabler/icons-vue';
+import type { MenuSection, MenuItem, ChildMenuItem } from '../type/left-menu.interface';
 
-/**
- * 컴팩트 메뉴 컴포넌트 (Compact Menu Component)
- *
- * 좌측 메뉴가 축소된 상태에서 사용되는 컴포넌트입니다.
- * - 아이콘만 표시되어 공간을 절약합니다.
- * - 마우스 호버 시 플로팅 서브메뉴가 나타납니다.
- * - 호버 기반의 직관적인 메뉴 네비게이션을 제공합니다.
- * - 단일 메뉴의 경우 툴팁으로 메뉴명을 표시합니다.
- */
-
-// Props 정의
 defineProps<{
-  visibleLeftMenus: MenuItem[];
+  visibleSections: MenuSection[];
 }>();
 
 const route = useRoute();
 
-// 상태 관리
+// 아이콘 매핑
+const iconMap: Record<string, Component> = {
+  IconUsers,
+  IconMessageCircle,
+  IconStretching,
+  IconBuilding,
+  IconPhone,
+  IconChartBar,
+  IconSparkles,
+  IconTable,
+  IconList,
+  IconShoppingCart,
+  IconHeart
+};
+
+// 상태
 const isOpen = ref<Record<number, boolean>>({});
 const menuRefs = ref<Record<number, HTMLElement>>({});
-const subMenuTimers = ref<Record<number, ReturnType<typeof setTimeout>>>({});
-const showSingleMenuTitle = ref<Record<number, boolean>>({});
-const singleMenuTimers = ref<Record<number, ReturnType<typeof setTimeout>>>({});
+const timers = ref<Record<number, ReturnType<typeof setTimeout>>>({});
 
-/**
- * 현재 경로와 메뉴 URL 비교하여 활성 상태 확인
- * @param url - 메뉴 URL
- * @returns 활성 상태 여부
- */
-const isActive = (url: string | undefined): boolean => {
-  return route.path === url;
+/** URL 활성 상태 확인 (startsWith로 서브경로 포함) */
+const isActiveUrl = (url: string): boolean => {
+  if (!url) return false;
+  return route.path === url || route.path.startsWith(url + '/');
 };
 
-/**
- * 현재 선택된 메뉴의 최상단 메뉴인지 확인
- * 서브메뉴 중 하나가 활성화되어 있으면 부모 메뉴도 활성 상태로 표시
- * @param menuItem - 메뉴 아이템
- * @returns 부모 메뉴 활성 상태 여부
- */
-const isParentMenuActive = (menuItem: MenuItem): boolean => {
-  if (!menuItem.children) return false;
-  return menuItem.children.some((child: ChildMenuItem) => isActive(child.url));
+/** 하위 메뉴 중 활성 상태 확인 */
+const hasActiveChild = (menu: MenuItem): boolean => {
+  if (!menu.children) return false;
+  return menu.children.some((child: ChildMenuItem) => isActiveUrl(child.url));
 };
 
-/**
- * 메뉴 엘리먼트 참조 설정
- * 플로팅 메뉴의 위치 계산을 위해 DOM 엘리먼트 참조를 저장
- * @param el - DOM 엘리먼트
- * @param menuId - 메뉴 ID
- */
+/** DOM 참조 저장 */
 const setMenuRef = (el: unknown, menuId: number): void => {
   const element = el as { $el?: HTMLElement } | HTMLElement | null;
   if (element && '$el' in element && element.$el) {
@@ -182,196 +142,47 @@ const setMenuRef = (el: unknown, menuId: number): void => {
   }
 };
 
-/**
- * 플로팅 메뉴 위치 계산
- * 화면 경계를 고려하여 메뉴가 잘리지 않도록 위치를 조정
- * @param menuId - 메뉴 ID
- * @returns 위치 스타일 객체
- */
+/** 플로팅 메뉴 위치 계산 */
 const getMenuPosition = (menuId: number): { top: string; left: string } => {
-  const menuElement = menuRefs.value[menuId];
-  if (!menuElement) {
-    return { top: '0px', left: '70px' };
-  }
+  const el = menuRefs.value[menuId];
+  if (!el) return { top: '0px', left: '70px' };
 
-  const rect = menuElement.getBoundingClientRect();
-  const menuWidth = 60; // 컴팩트 메뉴 너비
-  const leftPosition = menuWidth + 10; // 메뉴 오른쪽에 약간의 여백을 두고 표시
-
-  // 화면 높이를 고려한 위치 조정
+  const rect = el.getBoundingClientRect();
+  let top = rect.top;
   const windowHeight = window.innerHeight;
-  let topPosition = rect.top;
+  if (top + 200 > windowHeight) top = windowHeight - 220;
 
-  // 메뉴가 화면 아래로 벗어나는 경우 위치 조정
-  if (topPosition + 200 > windowHeight) {
-    topPosition = windowHeight - 220;
-  }
-
-  return {
-    top: `${Math.max(10, topPosition)}px`,
-    left: `${leftPosition}px`
-  };
+  return { top: `${Math.max(10, top)}px`, left: '70px' };
 };
 
-/**
- * 컴팩트 메뉴 마우스 진입 이벤트
- * 서브메뉴가 있는 메뉴에 호버 시 플로팅 메뉴를 표시
- * @param menuId - 메뉴 ID
- */
-const handleCompactMenuMouseEnter = (menuId: number): void => {
-  // 기존 타이머 취소 (빠른 호버 전환 대응)
-  if (subMenuTimers.value[menuId]) {
-    clearTimeout(subMenuTimers.value[menuId]);
-    delete subMenuTimers.value[menuId];
-  }
+/** 메뉴 닫기 */
+const closeMenu = (menuId: number): void => {
+  isOpen.value[menuId] = false;
+};
 
-  // 다른 메뉴 닫기 (한 번에 하나의 메뉴만 열리도록)
-  Object.keys(isOpen.value).forEach((key) => {
-    const id = parseInt(key);
-    if (id !== menuId) {
-      isOpen.value[id] = false;
-    }
-  });
-
+/** 호버 이벤트 */
+const handleMouseEnter = (menuId: number): void => {
+  if (timers.value[menuId]) { clearTimeout(timers.value[menuId]); delete timers.value[menuId]; }
+  Object.keys(isOpen.value).forEach(key => { if (parseInt(key) !== menuId) isOpen.value[parseInt(key)] = false; });
   isOpen.value[menuId] = true;
 };
-
-/**
- * 컴팩트 메뉴 마우스 이탈 이벤트
- * 서브메뉴로 이동할 시간을 제공하기 위해 지연 후 메뉴 닫기
- * @param menuId - 메뉴 ID
- */
-const handleCompactMenuMouseLeave = (menuId: number): void => {
-  // 100ms 후에 메뉴 닫기 (서브메뉴로 이동할 시간 제공)
-  subMenuTimers.value[menuId] = setTimeout(() => {
-    isOpen.value[menuId] = false;
-    delete subMenuTimers.value[menuId];
-  }, 100);
+const handleMouseLeave = (menuId: number): void => {
+  timers.value[menuId] = setTimeout(() => { isOpen.value[menuId] = false; delete timers.value[menuId]; }, 100);
 };
-
-/**
- * 서브 메뉴 마우스 진입 이벤트
- * 플로팅 서브메뉴에 마우스가 진입하면 닫기 타이머를 취소
- * @param menuId - 메뉴 ID
- */
-const handleSubMenuMouseEnter = (menuId: number): void => {
-  // 타이머 취소 (메뉴 유지)
-  if (subMenuTimers.value[menuId]) {
-    clearTimeout(subMenuTimers.value[menuId]);
-    delete subMenuTimers.value[menuId];
-  }
+const handleSubMenuEnter = (menuId: number): void => {
+  if (timers.value[menuId]) { clearTimeout(timers.value[menuId]); delete timers.value[menuId]; }
 };
-
-/**
- * 서브 메뉴 마우스 이탈 이벤트
- * 플로팅 서브메뉴에서 마우스가 나가면 즉시 메뉴 닫기
- * @param menuId - 메뉴 ID
- */
-const handleSubMenuMouseLeave = (menuId: number): void => {
-  // 즉시 메뉴 닫기
+const handleSubMenuLeave = (menuId: number): void => {
   isOpen.value[menuId] = false;
 };
 
-/**
- * 서브 메뉴 클릭 이벤트
- * 서브메뉴 아이템 클릭 시 플로팅 메뉴 닫기
- * @param menuId - 메뉴 ID
- */
-const handleSubMenuClick = (menuId: number): void => {
-  isOpen.value[menuId] = false;
-};
-
-/**
- * 컴팩트 단일 메뉴 마우스 진입 이벤트
- * 서브메뉴가 없는 단일 메뉴에 호버 시 툴팁 표시
- * @param menuId - 메뉴 ID
- */
-const handleCompactSingleMenuMouseEnter = (menuId: number): void => {
-  // 기존 타이머 취소
-  if (singleMenuTimers.value[menuId]) {
-    clearTimeout(singleMenuTimers.value[menuId]);
-    delete singleMenuTimers.value[menuId];
-  }
-
-  // 다른 단일 메뉴 타이틀 닫기
-  Object.keys(showSingleMenuTitle.value).forEach((key) => {
-    const id = parseInt(key);
-    if (id !== menuId) {
-      showSingleMenuTitle.value[id] = false;
-    }
-  });
-
-  showSingleMenuTitle.value[menuId] = true;
-};
-
-/**
- * 컴팩트 단일 메뉴 마우스 이탈 이벤트
- * 단일 메뉴에서 마우스가 나가면 지연 후 툴팁 숨기기
- * @param menuId - 메뉴 ID
- */
-const handleCompactSingleMenuMouseLeave = (menuId: number): void => {
-  // 100ms 후에 타이틀 숨기기
-  singleMenuTimers.value[menuId] = setTimeout(() => {
-    showSingleMenuTitle.value[menuId] = false;
-    delete singleMenuTimers.value[menuId];
-  }, 100);
-};
-
-/**
- * 단일 메뉴 타이틀 마우스 진입 이벤트
- * 툴팁에 마우스가 진입하면 숨기기 타이머를 취소
- * @param menuId - 메뉴 ID
- */
-const handleSingleMenuTitleMouseEnter = (menuId: number): void => {
-  // 타이머 취소 (타이틀 유지)
-  if (singleMenuTimers.value[menuId]) {
-    clearTimeout(singleMenuTimers.value[menuId]);
-    delete singleMenuTimers.value[menuId];
-  }
-};
-
-/**
- * 단일 메뉴 타이틀 마우스 이탈 이벤트
- * 툴팁에서 마우스가 나가면 즉시 툴팁 숨기기
- * @param menuId - 메뉴 ID
- */
-const handleSingleMenuTitleMouseLeave = (menuId: number): void => {
-  // 즉시 타이틀 숨기기
-  showSingleMenuTitle.value[menuId] = false;
-};
-
-// 컴포넌트 언마운트 시 타이머 정리 (메모리 누수 방지)
 onUnmounted(() => {
-  Object.values(subMenuTimers.value).forEach((timer) => {
-    clearTimeout(timer);
-  });
-  Object.values(singleMenuTimers.value).forEach((timer) => {
-    clearTimeout(timer);
-  });
+  Object.values(timers.value).forEach(timer => clearTimeout(timer));
 });
 
-// 외부에서 메뉴 상태 제어를 위한 함수 노출
 defineExpose({
-  /**
-   * 모든 메뉴와 툴팁을 닫는 함수
-   * 메뉴 토글 시 상태 초기화를 위해 사용
-   */
   closeAllMenus: () => {
-    Object.keys(isOpen.value).forEach((key) => {
-      isOpen.value[parseInt(key)] = false;
-    });
-    Object.keys(showSingleMenuTitle.value).forEach((key) => {
-      showSingleMenuTitle.value[parseInt(key)] = false;
-    });
+    Object.keys(isOpen.value).forEach(key => { isOpen.value[parseInt(key)] = false; });
   }
 });
 </script>
-
-<style scoped lang="scss">
-/* 호버 트랜지션 효과 - 부드러운 색상 변환 */
-.transition-colors {
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease;
-}
-</style>

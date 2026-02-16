@@ -6,13 +6,13 @@
         <!-- 상세 메뉴 (확장된 상태) - 전체 메뉴 정보가 표시되는 상태 -->
         <DetailedMenu
           v-if="!isMenuHidden"
-          :visible-left-menus="visibleLeftMenus"
+          :visible-sections="visibleSections"
           ref="detailedMenuRef"
         />
         <!-- 컴팩트 메뉴 (축소된 상태) - 아이콘만 표시되는 상태 -->
         <CompactMenu
           v-if="isMenuHidden"
-          :visible-left-menus="visibleLeftMenus"
+          :visible-sections="visibleSections"
           ref="compactMenuRef"
         />
 
@@ -41,16 +41,29 @@
 <script setup lang="ts">
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useLeftMenuStore } from '../store/left-menu.store';
+import { useGuideMenuStore } from '../store/guide-menu.store';
 
 // 분리된 컴포넌트 import
 import DetailedMenu from './detailed-menu.vue';
 import CompactMenu from './compact-menu.vue';
 
+const route = useRoute();
 const leftMenuStore = useLeftMenuStore();
-const { visibleLeftMenus } = storeToRefs(leftMenuStore);
+const guideMenuStore = useGuideMenuStore();
+
+// 경로에 따라 적절한 메뉴 스토어의 visibleSections 반환
+const isGuideArea = computed(() => route.path.startsWith('/guide'));
+
+const { visibleSections: crmSections } = storeToRefs(leftMenuStore);
+const { visibleSections: guideSections } = storeToRefs(guideMenuStore);
+
+const visibleSections = computed(() => {
+  return isGuideArea.value ? guideSections.value : crmSections.value;
+});
 
 // Emits 정의
 const emit = defineEmits<{

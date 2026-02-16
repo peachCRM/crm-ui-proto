@@ -2,12 +2,12 @@ import type { RouteRecordRaw } from 'vue-router';
 
 const orderRoutes: RouteRecordRaw = {
   path: 'order',
-  name: 'shop-order',
-  redirect: '/shop/order/list',
+  name: 'guide-order',
+  redirect: '/guide/domain/order/list',
   children: [
     {
       path: 'list',
-      name: 'shop-order-list',
+      name: 'guide-order-list',
       component: () => import('./list.vue')
     }
   ]

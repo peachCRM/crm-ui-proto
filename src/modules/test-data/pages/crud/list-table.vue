@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="flex items-center justify-between py-5">
     <div class="flex items-center gap-3">
       <u-button variant="outline" color="neutral" @click="removeCheck">선택삭제</u-button>
@@ -277,7 +277,7 @@ const goDetail = (testSeq: number) => {
 };
 
 const goDetailPage = (testSeq: number) => {
-  router.push(`/test/crud/detail/${testSeq}`);
+  router.push(`/guide/pattern/crud/detail/${testSeq}`);
 };
 
 const goInsert = () => {
@@ -364,7 +364,7 @@ watch(
       listParams.value.row = Number(listParams.value.row);
 
       //route 파라미터가 있고 특정 페이지 일때만 조회
-      if (route.path == '/test/crud/list') {
+      if (route.path == '/guide/pattern/crud/list') {
         getList();
       }
     }

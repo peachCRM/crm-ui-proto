@@ -266,7 +266,7 @@ watch(
       listParams.value.page = Number(listParams.value.page);
       listParams.value.row = Number(listParams.value.row);
 
-      if (route.path === '/shop/order/list') {
+      if (route.path === '/guide/domain/order/list') {
         getList();
       }
     }

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="flex flex-row items-center justify-between gap-2 py-3">
     <p-nuxt-select
       v-model="listParams.row"
@@ -180,7 +180,7 @@ watch(
     if (
       route.query &&
       Object.keys(route.query).length > 0 &&
-      route.path == '/test/crud/two-depth/list'
+      route.path == '/guide/pattern/crud/two-depth/list'
     ) {
       // // 로컬 스토리지 저장
       // objectLocalStorage.saveObjectToLocalStorage('TestDataTwoDepthList', {

@@ -3,6 +3,8 @@
     <UApp :toaster="{ position: 'top-right' }">
       <router-view />
     </UApp>
+    <!-- Floating Dock: 어떤 레이아웃에서든 하단에 표시 -->
+    <PZoneSwitcher />
     <PModalAlert :key="defaultLayoutStore.alertKey" />
     <PFullLoding :is-full-screen-popup-open="isLoading" />
     <PToast />
@@ -19,6 +21,7 @@ import { useThemeStore } from '@/modules/_common/store/theme.store';
 import PModalAlert from '@/modules/_common/components/modal/p-modal-alert.vue';
 import PFullLoding from '@/modules/_common/components/layouts/p-full-loding.vue';
 import PToast from '@/modules/_common/components/layouts/p-toast.vue';
+import PZoneSwitcher from '@/modules/layout/components/p-zone-switcher.vue';
 import { useDefaultLayoutStore } from '@/modules/_common/store/default-layout.store';
 import { useRouter } from 'vue-router';
 

@@ -220,7 +220,7 @@ watch(
       listParams.value.row = Number(listParams.value.row);
 
       // route 파라미터가 있고 특정 페이지일 때만 조회
-      if (route.path === '/ngo/banner/list') {
+      if (route.path === '/guide/domain/ngo-banner/list') {
         getList();
       }
     }

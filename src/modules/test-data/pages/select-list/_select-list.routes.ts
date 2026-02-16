@@ -1,15 +1,15 @@
-﻿import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 
 const selectListRoutes: RouteRecordRaw = {
-  path: '/test/select-list/demo',
-  name: 'test-select-list-demo',
+  path: 'select-list/demo',
+  name: 'guide-select-list-demo',
   component: () => import('./demo.vue'),
   meta: {
     title: '데이터 선택 모달 데모',
     breadcrumb: [
-      { name: '테스트', path: '/test' },
-      { name: 'Select List', path: '/test/select-list' },
-      { name: '데모', path: '/test/select-list/demo' }
+      { name: '가이드', path: '/guide' },
+      { name: 'Select List', path: '/guide/pattern/select-list' },
+      { name: '데모', path: '/guide/pattern/select-list/demo' }
     ]
   }
 };

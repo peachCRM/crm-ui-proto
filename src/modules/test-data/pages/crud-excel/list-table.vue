@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="flex items-center justify-between py-5">
     <div class="flex items-center gap-2">
       <u-button variant="outline" color="neutral" @click="checkChangeUse">선택사용</u-button>
@@ -300,7 +300,7 @@ watch(
       listParams.value.row = Number(listParams.value.row);
 
       //route 파라미터가 있고 특정 페이지 일때만 조회
-      if (route.path == '/test/crud-excel/list') {
+      if (route.path == '/guide/pattern/crud-excel/list') {
         getList();
       }
     }
