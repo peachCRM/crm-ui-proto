@@ -70,7 +70,7 @@
                         : 'text-[#37352f] dark:text-[#cfcfcf] hover:bg-[#f0f0ef] dark:hover:bg-[#252525]'
                     ]"
                     :aria-current="isActive ? 'page' : undefined"
-                    @click="navigate"
+                    @click="handleChildClick(child, navigate)"
                   >
                     {{ child.name }}
                   </button>
@@ -94,7 +94,7 @@
                       : 'text-[#37352f] dark:text-[#cfcfcf] hover:bg-[#f0f0ef] dark:hover:bg-[#252525]'
                   ]"
                   :aria-current="isActive ? 'page' : undefined"
-                  @click="navigate"
+                  @click="handleSingleClick(menu, navigate)"
                 >
                   <span class="w-3.5" />
                   <span class="text-[13px]">{{ menu.name }}</span>
@@ -128,8 +128,9 @@ import type { MenuSection, MenuItem, ChildMenuItem } from '../type/left-menu.int
 import { useLeftMenuStore } from '../store/left-menu.store';
 import { useGuideMenuStore } from '../store/guide-menu.store';
 
-defineProps<{
+const props = defineProps<{
   visibleSections: MenuSection[];
+  onMenuClick: (url: string, menuName: string) => boolean;
 }>();
 
 const route = useRoute();
@@ -173,6 +174,20 @@ const toggleMenu = (menuId: number): void => {
     expandedMenus.value.push(menuId);
   } else {
     expandedMenus.value.splice(index, 1);
+  }
+};
+
+/** 하위 메뉴 클릭 - 라우트 구현 여부 확인 후 네비게이션 */
+const handleChildClick = (child: ChildMenuItem, navigateFn: () => void): void => {
+  if (props.onMenuClick(child.url, child.name)) {
+    navigateFn();
+  }
+};
+
+/** 단일 메뉴 클릭 - 라우트 구현 여부 확인 후 네비게이션 */
+const handleSingleClick = (menu: MenuItem, navigateFn: () => void): void => {
+  if (props.onMenuClick(menu.url || '/', menu.name)) {
+    navigateFn();
   }
 };
 

@@ -7,12 +7,14 @@
         <DetailedMenu
           v-if="!isMenuHidden"
           :visible-sections="visibleSections"
+          :on-menu-click="handleMenuClick"
           ref="detailedMenuRef"
         />
         <!-- 컴팩트 메뉴 (축소된 상태) - 아이콘만 표시되는 상태 -->
         <CompactMenu
           v-if="isMenuHidden"
           :visible-sections="visibleSections"
+          :on-menu-click="handleMenuClick"
           ref="compactMenuRef"
         />
 
@@ -36,13 +38,30 @@
     </PerfectScrollbar>
   </div>
   <!-- E : SIDE -->
+
+  <!-- 준비중 모달 -->
+  <UModal v-model:open="isComingSoonOpen" title="알림">
+    <template #body>
+      <div class="flex flex-col items-center justify-center py-8">
+        <div class="i-heroicons-information-circle text-primary mb-4 h-12 w-12"></div>
+        <p class="text-lg font-medium">
+          <strong>{{ comingSoonMenuName }}</strong> 기능은 현재 준비중입니다.
+        </p>
+      </div>
+    </template>
+    <template #footer>
+      <div class="flex justify-end">
+        <UButton color="primary" @click="isComingSoonOpen = false">확인</UButton>
+      </div>
+    </template>
+  </UModal>
 </template>
 
 <script setup lang="ts">
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useLeftMenuStore } from '../store/left-menu.store';
 import { useGuideMenuStore } from '../store/guide-menu.store';
@@ -52,6 +71,7 @@ import DetailedMenu from './detailed-menu.vue';
 import CompactMenu from './compact-menu.vue';
 
 const route = useRoute();
+const router = useRouter();
 const leftMenuStore = useLeftMenuStore();
 const guideMenuStore = useGuideMenuStore();
 
@@ -64,6 +84,27 @@ const { visibleSections: guideSections } = storeToRefs(guideMenuStore);
 const visibleSections = computed(() => {
   return isGuideArea.value ? guideSections.value : crmSections.value;
 });
+
+// 준비중 모달 상태
+const isComingSoonOpen = ref(false);
+const comingSoonMenuName = ref('');
+
+/**
+ * 라우트 구현 여부 확인 후 메뉴 클릭 처리
+ * @returns true: 네비게이션 진행, false: 준비중 모달 표시
+ */
+const handleMenuClick = (url: string, menuName: string): boolean => {
+  if (!url) return false;
+  const resolved = router.resolve(url);
+  const lastMatched = resolved.matched[resolved.matched.length - 1];
+  // catch-all 라우트이거나 컴포넌트가 없는 경우 준비중 처리
+  if (!lastMatched || lastMatched.path.includes(':pathMatch') || !lastMatched.components?.default) {
+    comingSoonMenuName.value = menuName;
+    isComingSoonOpen.value = true;
+    return false;
+  }
+  return true;
+};
 
 // Emits 정의
 const emit = defineEmits<{

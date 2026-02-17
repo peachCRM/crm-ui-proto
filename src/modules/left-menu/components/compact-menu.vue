@@ -38,16 +38,18 @@
                 v-for="child in menu.children"
                 :key="child.id"
                 :to="child.url"
-                @click="closeMenu(menu.id)"
+                custom
+                v-slot="{ isActive: childIsActive }"
               >
                 <div
-                  :class="isActiveUrl(child.url)
+                  :class="childIsActive || isActiveUrl(child.url)
                     ? 'text-[color:var(--ui-primary)] bg-blue-50 font-medium dark:bg-blue-950/30'
                     : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800'"
-                  class="flex items-center gap-2 h-9 px-3 text-sm transition-colors duration-150"
+                  class="flex items-center gap-2 h-9 px-3 text-sm transition-colors duration-150 cursor-pointer"
+                  @click="handleChildClick(child, menu.id)"
                 >
                   <span
-                    v-if="isActiveUrl(child.url)"
+                    v-if="childIsActive || isActiveUrl(child.url)"
                     class="w-1 h-1 rounded-full bg-[color:var(--ui-primary)] shrink-0"
                   />
                   {{ child.name }}
@@ -57,16 +59,17 @@
           </div>
 
           <!-- 자식이 없는 단일 메뉴 -->
-          <router-link v-else :to="menu.url || '/'">
+          <router-link v-else :to="menu.url || '/'" custom v-slot="{ isActive: menuIsActive }">
             <div
               class="flex cursor-pointer items-center justify-center px-2 py-3"
-              :class="isActiveUrl(menu.url) ? 'bg-blue-50 dark:bg-blue-950/30' : ''"
+              :class="menuIsActive || isActiveUrl(menu.url) ? 'bg-blue-50 dark:bg-blue-950/30' : ''"
               :title="menu.name"
+              @click="handleSingleClick(menu)"
             >
               <component
                 :is="iconMap[menu.icon]"
                 class="w-5 h-5"
-                :class="isActiveUrl(menu.url) ? 'text-[color:var(--ui-primary)]' : 'text-neutral-500'"
+                :class="menuIsActive || isActiveUrl(menu.url) ? 'text-[color:var(--ui-primary)]' : 'text-neutral-500'"
               />
             </div>
           </router-link>
@@ -78,7 +81,7 @@
 
 <script setup lang="ts">
 import { ref, onUnmounted, type Component } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import {
   IconUsers,
   IconMessageCircle,
@@ -94,11 +97,13 @@ import {
 } from '@tabler/icons-vue';
 import type { MenuSection, MenuItem, ChildMenuItem } from '../type/left-menu.interface';
 
-defineProps<{
+const props = defineProps<{
   visibleSections: MenuSection[];
+  onMenuClick: (url: string, menuName: string) => boolean;
 }>();
 
 const route = useRoute();
+const router = useRouter();
 
 // 아이콘 매핑
 const iconMap: Record<string, Component> = {
@@ -153,6 +158,21 @@ const getMenuPosition = (menuId: number): { top: string; left: string } => {
   if (top + 200 > windowHeight) top = windowHeight - 220;
 
   return { top: `${Math.max(10, top)}px`, left: '70px' };
+};
+
+/** 하위 메뉴 클릭 - 라우트 구현 여부 확인 후 네비게이션 */
+const handleChildClick = (child: ChildMenuItem, menuId: number): void => {
+  if (props.onMenuClick(child.url, child.name)) {
+    router.push(child.url);
+  }
+  closeMenu(menuId);
+};
+
+/** 단일 메뉴 클릭 - 라우트 구현 여부 확인 후 네비게이션 */
+const handleSingleClick = (menu: MenuItem): void => {
+  if (props.onMenuClick(menu.url || '/', menu.name)) {
+    router.push(menu.url || '/');
+  }
 };
 
 /** 메뉴 닫기 */
