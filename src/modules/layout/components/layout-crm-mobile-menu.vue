@@ -7,8 +7,8 @@
     <UIcon name="i-lucide-menu" class="w-5 h-5" />
   </button>
 
-  <!-- 모바일 메뉴 슬라이드오버 -->
-  <USlideover v-model:open="isOpen" side="right" :ui="{ width: 'w-[300px]' }">
+  <!-- 모바일 메뉴 슬라이드오버 (PICK: 좌측 탭+패널 분리) -->
+  <USlideover v-model:open="isOpen" side="left" :ui="{ width: 'w-[300px]' }">
     <template #header>
       <div class="flex items-center justify-between w-full">
         <div class="flex items-center gap-3">
@@ -37,25 +37,69 @@
     </template>
 
     <template #body>
-      <div class="py-2">
-        <!-- 3-depth 아코디언 메뉴 -->
-        <div
-          v-for="section in menuStore.visibleSections"
-          :key="section.id"
-          class="mb-3"
-        >
-          <!-- 1차: 섹션 타이틀 -->
-          <div class="px-4 py-2 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
-            {{ section.sectionTitle }}
+      <div class="flex h-full -mx-4 -my-4">
+        <!-- 좌측 아이콘 탭 (섹션 전환) -->
+        <div class="w-14 bg-gray-50 dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-700 shrink-0 pt-1">
+          <div
+            v-for="(section, idx) in menuStore.visibleSections"
+            :key="section.id"
+            :class="[
+              'flex flex-col items-center py-3 cursor-pointer transition-colors duration-100'
+            ]"
+            :style="{
+              background: activeTab === idx ? 'white' : 'transparent',
+              borderRight: activeTab === idx ? '2px solid #287dff' : '2px solid transparent'
+            }"
+            @click="activeTab = idx"
+          >
+            <component
+              :is="getSectionIcon(section)"
+              class="w-5 h-5"
+              :class="activeTab === idx ? 'text-[#287dff]' : 'text-gray-400 dark:text-gray-500'"
+            />
+            <span
+              class="text-[9px] mt-0.5 leading-tight"
+              :class="activeTab === idx ? 'text-[#287dff] font-medium' : 'text-gray-400 dark:text-gray-500'"
+            >{{ section.sectionTitle }}</span>
           </div>
 
-          <div class="px-2">
-            <div v-for="menu in section.menus" :key="menu.id">
-              <!-- children이 있는 2차 메뉴 (아코디언) -->
+          <!-- 하단 유틸리티 아이콘 -->
+          <div class="mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
+            <router-link
+              to="/space"
+              class="flex flex-col items-center py-3 cursor-pointer"
+              @click="isOpen = false"
+            >
+              <UIcon name="i-lucide-layout-grid" class="w-5 h-5 text-gray-400 dark:text-gray-500" />
+              <span class="text-[9px] mt-0.5 text-gray-400 dark:text-gray-500">전환</span>
+            </router-link>
+            <router-link
+              to="/guide/pattern/crud/list"
+              class="flex flex-col items-center py-3 cursor-pointer"
+              @click="isOpen = false"
+            >
+              <UIcon name="i-lucide-book-open" class="w-5 h-5 text-gray-400 dark:text-gray-500" />
+              <span class="text-[9px] mt-0.5 text-gray-400 dark:text-gray-500">가이드</span>
+            </router-link>
+          </div>
+        </div>
+
+        <!-- 우측 콘텐츠 패널 (2차/3차 아코디언) -->
+        <div class="flex-1 overflow-y-auto py-2">
+          <!-- 현재 선택된 섹션의 타이틀 -->
+          <div class="px-3 py-1.5 text-[13px] font-bold text-[#287dff]">
+            {{ activeSection?.sectionTitle }}
+          </div>
+
+          <!-- 2차/3차 메뉴 아코디언 -->
+          <div v-if="activeSection" class="px-1">
+            <div v-for="menu in activeSection.menus" :key="menu.id">
+              <!-- children이 있는 2차 메뉴 -->
               <template v-if="menu.children && menu.children.length > 0">
                 <button
                   :class="[
-                    'w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors duration-150',
+                    'w-full flex items-center justify-between px-3 py-2.5 text-sm rounded-md cursor-pointer',
+                    'transition-colors duration-100',
                     isMenuExpanded(menu.id) || hasActiveChild(menu)
                       ? 'text-[#287dff] dark:text-blue-400 font-medium'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -63,26 +107,26 @@
                   @click="toggleMenu(menu.id)"
                 >
                   <span>{{ menu.name }}</span>
-                  <UIcon
-                    name="i-lucide-chevron-down"
+                  <span
                     :class="[
-                      'w-4 h-4 text-gray-400 transition-transform duration-200',
-                      isMenuExpanded(menu.id) ? 'rotate-180' : ''
+                      'text-[9px] text-gray-300 dark:text-gray-600 transition-transform duration-150 inline-block'
                     ]"
-                  />
+                    :style="{ transform: isMenuExpanded(menu.id) ? 'rotate(90deg)' : 'rotate(0deg)' }"
+                  >▶</span>
                 </button>
 
                 <!-- 3차: 하위 메뉴 링크 -->
-                <div v-show="isMenuExpanded(menu.id)" class="mt-0.5 mb-1">
+                <div v-show="isMenuExpanded(menu.id)" class="mb-1">
                   <router-link
                     v-for="child in menu.children"
                     :key="child.id"
                     :to="child.url"
                     :class="[
-                      'flex items-center gap-2 pl-7 pr-3 py-2 text-sm rounded-lg transition-colors duration-150',
+                      'flex items-center gap-2 pl-6 pr-3 py-2 text-sm rounded-md',
+                      'transition-colors duration-100',
                       menuStore.isActiveItem(route.path, child.url)
-                        ? 'text-[#287dff] dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 font-medium'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        ? 'text-[#287dff] dark:text-blue-400 bg-[#f0f0ef] dark:bg-[#252525] font-medium'
+                        : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                     ]"
                     @click="isOpen = false"
                   >
@@ -100,9 +144,10 @@
                 <router-link
                   :to="menu.url || '/'"
                   :class="[
-                    'flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors duration-150',
+                    'flex items-center gap-2 px-3 py-2.5 text-sm rounded-md',
+                    'transition-colors duration-100',
                     menuStore.isActiveItem(route.path, menu.url)
-                      ? 'text-[#287dff] dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 font-medium'
+                      ? 'text-[#287dff] dark:text-blue-400 bg-[#f0f0ef] dark:bg-[#252525] font-medium'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   ]"
                   @click="isOpen = false"
@@ -117,43 +162,29 @@
             </div>
           </div>
         </div>
-
-        <!-- 유틸리티 영역 -->
-        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 px-2">
-          <router-link
-            to="/space"
-            :class="[
-              'flex items-center gap-3 px-3 py-2 text-sm rounded-lg',
-              'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
-            ]"
-            @click="isOpen = false"
-          >
-            <UIcon name="i-lucide-layout-grid" class="w-4 h-4" />
-            스페이스 전환
-          </router-link>
-          <router-link
-            to="/guide/pattern/crud/list"
-            :class="[
-              'flex items-center gap-3 px-3 py-2 text-sm rounded-lg',
-              'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
-            ]"
-            @click="isOpen = false"
-          >
-            <UIcon name="i-lucide-book-open" class="w-4 h-4" />
-            가이드 보기
-          </router-link>
-        </div>
       </div>
     </template>
   </USlideover>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import PZoneSwitcher from './p-zone-switcher.vue';
+import { ref, computed, watch, type Component } from 'vue';
 import { useRoute } from 'vue-router';
 import { useLeftMenuStore } from '@/modules/left-menu/store/left-menu.store';
-import type { MenuItem } from '@/modules/left-menu/type/left-menu.interface';
+import type { MenuItem, MenuSection } from '@/modules/left-menu/type/left-menu.interface';
+import {
+  IconUsers,
+  IconMessageCircle,
+  IconStretching2 as IconStretching,
+  IconBuilding,
+  IconPhone,
+  IconChartBar,
+  IconSparkles,
+  IconTable,
+  IconList,
+  IconShoppingCart,
+  IconHeart
+} from '@tabler/icons-vue';
 
 defineProps<{
   currentSpaceName: string;
@@ -163,11 +194,41 @@ defineProps<{
 const route = useRoute();
 const menuStore = useLeftMenuStore();
 
+// 아이콘 매핑 (스토어의 문자열 → 실제 컴포넌트)
+const iconMap: Record<string, Component> = {
+  IconUsers,
+  IconMessageCircle,
+  IconStretching,
+  IconBuilding,
+  IconPhone,
+  IconChartBar,
+  IconSparkles,
+  IconTable,
+  IconList,
+  IconShoppingCart,
+  IconHeart
+};
+
 // 슬라이드오버 열림 상태
 const isOpen = ref(false);
 
+// 좌측 탭 활성 인덱스
+const activeTab = ref(0);
+
 // 펼쳐진 2차 메뉴 ID 배열
 const expandedMenus = ref<number[]>([]);
+
+/** 현재 활성 섹션 */
+const activeSection = computed(() => {
+  const sections = menuStore.visibleSections;
+  return sections[activeTab.value] || sections[0];
+});
+
+/** 섹션의 대표 아이콘 가져오기 (첫 번째 메뉴의 아이콘 사용) */
+const getSectionIcon = (section: MenuSection): Component => {
+  const firstIcon = section.menus[0]?.icon;
+  return iconMap[firstIcon] || IconList;
+};
 
 /** 메뉴 펼침/접힘 확인 */
 const isMenuExpanded = (menuId: number): boolean => {
@@ -190,7 +251,7 @@ const hasActiveChild = (menu: MenuItem): boolean => {
   return menu.children.some(child => menuStore.isActiveItem(route.path, child.url));
 };
 
-/** 현재 URL에 해당하는 메뉴 자동 펼침 */
+/** 현재 URL에 해당하는 메뉴 자동 펼침 + 활성 탭 설정 */
 const autoExpandActiveMenus = (): void => {
   const ids = menuStore.getExpandedMenuIds(route.path);
   ids.forEach(id => {
@@ -198,6 +259,15 @@ const autoExpandActiveMenus = (): void => {
       expandedMenus.value.push(id);
     }
   });
+
+  // 활성 섹션의 탭 자동 선택
+  const activeSectionId = menuStore.getActiveSectionId(route.path);
+  if (activeSectionId !== null) {
+    const idx = menuStore.visibleSections.findIndex(s => s.id === activeSectionId);
+    if (idx !== -1) {
+      activeTab.value = idx;
+    }
+  }
 };
 
 // 라우트 변경 시 자동 펼침
