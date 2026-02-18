@@ -117,19 +117,24 @@
                           v-for="child in menu.children"
                           :key="child.id"
                           :to="child.url"
-                          :class="[
-                            'flex items-center gap-2 px-3 py-2 text-sm transition-all duration-150',
-                            menuStore.isActiveItem(route.path, child.url)
-                              ? 'text-[#287dff] dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 font-medium'
-                              : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
-                          ]"
-                          @click="closeAll"
+                          custom
+                          v-slot="{ navigate, isActive }"
                         >
-                          <span
-                            v-if="menuStore.isActiveItem(route.path, child.url)"
-                            class="w-1 h-1 rounded-full bg-[#287dff] dark:bg-blue-400 shrink-0"
-                          />
-                          {{ child.name }}
+                          <a
+                            :class="[
+                              'flex items-center gap-2 px-3 py-2 text-sm transition-all duration-150 cursor-pointer',
+                              isActive || menuStore.isActiveItem(route.path, child.url)
+                                ? 'text-[#287dff] dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 font-medium'
+                                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
+                            ]"
+                            @click="checkAndNavigate(child.url, child.name, navigate)"
+                          >
+                            <span
+                              v-if="isActive || menuStore.isActiveItem(route.path, child.url)"
+                              class="w-1 h-1 rounded-full bg-[#287dff] dark:bg-blue-400 shrink-0"
+                            />
+                            {{ child.name }}
+                          </a>
                         </router-link>
                       </div>
                     </div>
@@ -140,19 +145,24 @@
                 <template v-else>
                   <router-link
                     :to="menu.url || '/'"
-                    :class="[
-                      'flex items-center gap-2 px-3 py-2 text-sm transition-all duration-150',
-                      menuStore.isActiveItem(route.path, menu.url)
-                        ? 'text-[#287dff] dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 font-medium'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
-                    ]"
-                    @click="closeAll"
+                    custom
+                    v-slot="{ navigate, isActive }"
                   >
-                    <span
-                      v-if="menuStore.isActiveItem(route.path, menu.url)"
-                      class="w-1 h-1 rounded-full bg-[#287dff] dark:bg-blue-400 shrink-0"
-                    />
-                    {{ menu.name }}
+                    <a
+                      :class="[
+                        'flex items-center gap-2 px-3 py-2 text-sm transition-all duration-150 cursor-pointer',
+                        isActive || menuStore.isActiveItem(route.path, menu.url)
+                          ? 'text-[#287dff] dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 font-medium'
+                          : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
+                      ]"
+                      @click="checkAndNavigate(menu.url || '/', menu.name, navigate)"
+                    >
+                      <span
+                        v-if="isActive || menuStore.isActiveItem(route.path, menu.url)"
+                        class="w-1 h-1 rounded-full bg-[#287dff] dark:bg-blue-400 shrink-0"
+                      />
+                      {{ menu.name }}
+                    </a>
                   </router-link>
                 </template>
               </div>
@@ -178,11 +188,28 @@
       <UBadge color="success" variant="soft">Mock 모드</UBadge>
     </div>
   </div>
+
+  <!-- 준비중 모달 -->
+  <UModal v-model:open="isComingSoonOpen" title="알림">
+    <template #body>
+      <div class="flex flex-col items-center justify-center py-8">
+        <div class="i-heroicons-information-circle text-primary mb-4 h-12 w-12"></div>
+        <p class="text-lg font-medium">
+          <strong>{{ comingSoonMenuName }}</strong> 기능은 현재 준비중입니다.
+        </p>
+      </div>
+    </template>
+    <template #footer>
+      <div class="flex justify-end">
+        <UButton color="primary" @click="isComingSoonOpen = false">확인</UButton>
+      </div>
+    </template>
+  </UModal>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useLeftMenuStore } from '@/modules/left-menu/store/left-menu.store';
 import type { MenuItem } from '@/modules/left-menu/type/left-menu.interface';
 
@@ -193,13 +220,36 @@ defineProps<{
 }>();
 
 const route = useRoute();
+const router = useRouter();
 const menuStore = useLeftMenuStore();
+
+// 준비중 모달 상태
+const isComingSoonOpen = ref(false);
+const comingSoonMenuName = ref('');
 
 // 드롭다운 상태
 const activeMenu = ref<number | null>(null);
 const activeSubmenu = ref<number | null>(null);
 let sectionTimeout: ReturnType<typeof setTimeout> | null = null;
 let menuTimeout: ReturnType<typeof setTimeout> | null = null;
+
+/**
+ * 라우트 구현 여부 확인 후 네비게이션 처리
+ * 미구현 시 준비중 모달 표시
+ */
+const checkAndNavigate = (url: string, menuName: string, navigateFn: () => void): void => {
+  if (!url) return;
+  const resolved = router.resolve(url);
+  const lastMatched = resolved.matched[resolved.matched.length - 1];
+  if (!lastMatched || lastMatched.path.includes(':pathMatch') || !lastMatched.components?.default) {
+    comingSoonMenuName.value = menuName;
+    isComingSoonOpen.value = true;
+    closeAll();
+    return;
+  }
+  navigateFn();
+  closeAll();
+};
 
 /** 하위 메뉴 중 활성 상태가 있는지 확인 */
 const hasActiveChild = (menu: MenuItem): boolean => {

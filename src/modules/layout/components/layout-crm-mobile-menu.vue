@@ -39,7 +39,7 @@
     <template #body>
       <div class="flex h-full -mx-4 -my-4">
         <!-- 좌측 아이콘 탭 (섹션 전환) -->
-        <div class="w-14 bg-gray-50 dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-700 shrink-0 pt-1">
+        <div class="w-14 bg-gray-100 dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-700 shrink-0 pt-1">
           <div
             v-for="(section, idx) in menuStore.visibleSections"
             :key="section.id"
@@ -52,11 +52,17 @@
             }"
             @click="activeTab = idx"
           >
-            <component
-              :is="getSectionIcon(section)"
-              class="w-5 h-5"
-              :class="activeTab === idx ? 'text-[#287dff]' : 'text-gray-400 dark:text-gray-500'"
-            />
+            <div
+              class="w-8 h-8 rounded-xl flex items-center justify-center shadow-sm"
+              :class="activeTab === idx ? 'ring-2 ring-[#287dff]/30' : 'bg-white dark:bg-[#2a2a2a]'"
+              :style="activeTab === idx ? { backgroundColor: section.iconBg } : undefined"
+            >
+              <component
+                :is="iconMap[section.icon]"
+                class="w-4 h-4"
+                :class="activeTab === idx ? 'text-white' : 'text-gray-400 dark:text-gray-500'"
+              />
+            </div>
             <span
               class="text-[9px] mt-0.5 leading-tight"
               :class="activeTab === idx ? 'text-[#287dff] font-medium' : 'text-gray-400 dark:text-gray-500'"
@@ -171,19 +177,16 @@
 import { ref, computed, watch, type Component } from 'vue';
 import { useRoute } from 'vue-router';
 import { useLeftMenuStore } from '@/modules/left-menu/store/left-menu.store';
-import type { MenuItem, MenuSection } from '@/modules/left-menu/type/left-menu.interface';
+import type { MenuItem } from '@/modules/left-menu/type/left-menu.interface';
 import {
   IconUsers,
-  IconMessageCircle,
+  IconSpeakerphone,
+  IconChartBar,
+  IconSettings,
   IconStretching2 as IconStretching,
   IconBuilding,
-  IconPhone,
-  IconChartBar,
-  IconSparkles,
-  IconTable,
-  IconList,
-  IconShoppingCart,
-  IconHeart
+  IconBook,
+  IconShoppingCart
 } from '@tabler/icons-vue';
 
 defineProps<{
@@ -194,19 +197,16 @@ defineProps<{
 const route = useRoute();
 const menuStore = useLeftMenuStore();
 
-// 아이콘 매핑 (스토어의 문자열 → 실제 컴포넌트)
+// 아이콘 매핑 (섹션 아이콘)
 const iconMap: Record<string, Component> = {
   IconUsers,
-  IconMessageCircle,
+  IconSpeakerphone,
+  IconChartBar,
+  IconSettings,
   IconStretching,
   IconBuilding,
-  IconPhone,
-  IconChartBar,
-  IconSparkles,
-  IconTable,
-  IconList,
-  IconShoppingCart,
-  IconHeart
+  IconBookOpen: IconBook,
+  IconShoppingCart
 };
 
 // 슬라이드오버 열림 상태
@@ -223,12 +223,6 @@ const activeSection = computed(() => {
   const sections = menuStore.visibleSections;
   return sections[activeTab.value] || sections[0];
 });
-
-/** 섹션의 대표 아이콘 가져오기 (첫 번째 메뉴의 아이콘 사용) */
-const getSectionIcon = (section: MenuSection): Component => {
-  const firstIcon = section.menus[0]?.icon;
-  return iconMap[firstIcon] || IconList;
-};
 
 /** 메뉴 펼침/접힘 확인 */
 const isMenuExpanded = (menuId: number): boolean => {

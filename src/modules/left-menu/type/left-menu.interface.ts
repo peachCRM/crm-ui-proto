@@ -1,23 +1,25 @@
 // 좌측 메뉴 인터페이스 정의
 
-/** 섹션 (최상위 그룹) - 캡처처럼 "회원", "콘텐츠" 등의 섹션 타이틀 */
+/** 섹션 (최상위 그룹) - 1차 depth */
 export interface MenuSection {
   id: number;
-  sectionTitle: string; // 섹션 타이틀 (예: "고객", "상담", "업종기능")
-  menus: MenuItem[];    // 해당 섹션의 메뉴 목록
+  sectionTitle: string; // 섹션 타이틀 (예: "고객", "마케팅")
+  icon: string;         // 섹션 아이콘 이름 (예: 'IconUsers', 'IconSpeakerphone')
+  iconBg: string;       // iOS 스타일 아이콘 배경색 (예: '#5B8DEF')
+  menus: MenuItem[];    // 2차 메뉴 목록
 }
 
-/** 메뉴 아이템 (2depth - 아코디언 또는 단일 링크) */
+/** 메뉴 아이템 (2차 depth) */
 export interface MenuItem {
   id: number;
   name: string;
-  url: string;           // 비어있으면 아코디언 (자식 있음)
-  icon: string;          // tabler icon 이름
+  url: string;           // 비어있으면 섹션 헤더 역할
+  icon: string;          // tabler icon 이름 (컴팩트 모드용)
   hideInProd: boolean;
-  children?: ChildMenuItem[]; // 3depth 하위 메뉴
+  children: ChildMenuItem[]; // 3차 하위 메뉴
 }
 
-/** 하위 메뉴 아이템 (3depth - 링크) */
+/** 하위 메뉴 아이템 (3차 depth) */
 export interface ChildMenuItem {
   id: number;
   name: string;
@@ -28,6 +30,7 @@ export interface ChildMenuItem {
 /** 좌측 메뉴 상태 */
 export interface LeftMenuState {
   menuSections: MenuSection[];
+  activeSectionId: number; // 현재 활성 섹션 ID
 }
 
 /** 상단 메뉴 활성 상태 */

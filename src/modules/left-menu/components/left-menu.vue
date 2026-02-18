@@ -2,7 +2,7 @@
   <!-- S : SIDE 좌측 메뉴 컨테이너 -->
   <div class="shadow-custom0010 dark:bg-black141414 fixed top-[0] bottom-0 left-0 z-20 bg-white">
     <PerfectScrollbar class="">
-      <div class="relative h-screen pt-20">
+      <div class="relative h-screen pt-16">
         <!-- 상세 메뉴 (확장된 상태) - 전체 메뉴 정보가 표시되는 상태 -->
         <DetailedMenu
           v-if="!isMenuHidden"

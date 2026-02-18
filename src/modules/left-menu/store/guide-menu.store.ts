@@ -8,11 +8,14 @@ import type { LeftMenuState, MenuSection } from '../type/left-menu.interface';
  */
 export const useGuideMenuStore = defineStore('guideMenu', {
   state: (): LeftMenuState => ({
+    activeSectionId: 100,
     menuSections: [
       // ── UI 예시 섹션 ──
       {
         id: 100,
         sectionTitle: 'UI 예시',
+        icon: 'IconBookOpen',
+        iconBg: '#5B8DEF',
         menus: [
           {
             id: 101,
@@ -46,6 +49,8 @@ export const useGuideMenuStore = defineStore('guideMenu', {
       {
         id: 200,
         sectionTitle: '도메인 예시',
+        icon: 'IconShoppingCart',
+        iconBg: '#FF9500',
         menus: [
           {
             id: 201,
