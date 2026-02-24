@@ -5,7 +5,7 @@
       title="고객 목록"
     />
   </div>
-  <div :class="['flex flex-row items-stretch gap-6', 'bg-bodyBg dark:bg-black']">
+  <div :class="['flex flex-row items-stretch gap-6']">
     <!-- 좌측: 검색 + 테이블 -->
     <div class="bg-bodyBg flex h-full w-full max-w-[380px] flex-col dark:bg-black">
       <u-card class="w-full">

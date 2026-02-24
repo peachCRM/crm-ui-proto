@@ -1,8 +1,8 @@
 <template>
   <!-- S : SIDE 좌측 메뉴 컨테이너 -->
-  <div class="shadow-custom0010 dark:bg-black141414 fixed top-[0] bottom-0 left-0 z-20 bg-white">
+  <div class="dark:bg-black141414 fixed top-0 bottom-0 left-0 z-20 bg-white border-r border-[#f1f5f9] dark:border-gray-800" style="box-shadow: 2px 0 12px rgba(0,0,0,0.06)">
     <PerfectScrollbar class="">
-      <div class="relative h-screen pt-16">
+        <div class="relative h-screen pt-[58px]">
         <!-- 상세 메뉴 (확장된 상태) - 전체 메뉴 정보가 표시되는 상태 -->
         <DetailedMenu
           v-if="!isMenuHidden"
@@ -21,10 +21,10 @@
         <!-- 메뉴 토글 버튼 (접기/펼치기) -->
         <div
           :class="[
-            'border-customGrayE4 dark:border-gray424242 dark:bg-black141414 fixed top-1/2 z-999 flex h-[74px] w-[20px] -translate-y-1/2 transform cursor-pointer flex-row items-center justify-center rounded-r border-r bg-white p-1',
-            isMenuHidden ? 'left-[60px]' : 'left-[186px]'
+            'dark:border-gray424242 dark:bg-black141414 fixed top-1/2 z-999 flex h-[60px] w-[18px] -translate-y-1/2 transform cursor-pointer flex-row items-center justify-center rounded-r bg-white p-1 border border-[#e8edf3] border-l-0 transition-all duration-200 hover:bg-customblue-50',
+            isMenuHidden ? 'left-16' : 'left-[264px]'
           ]"
-          style="box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1)"
+          style="box-shadow: 3px 0 8px rgba(0,0,0,0.08)"
           @click="toggleMenuVisibility"
         >
           <img

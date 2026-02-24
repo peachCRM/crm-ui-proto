@@ -1,130 +1,156 @@
 <template>
-  <!-- 듀얼 패널 상세 메뉴: 48px 아이콘 스트립 + 138px 메뉴 패널 -->
-  <div class="w-[186px] flex h-full bg-[#fbfbfa] dark:bg-[#191919]">
+  <!-- 듀얼 패널 상세 메뉴: 64px 아이콘 레일 + 200px 메뉴 패널 = 264px -->
+  <div class="w-[264px] flex h-full">
 
-    <!-- 좌측 아이콘 스트립 (48px) -->
-    <div class="w-12 shrink-0 bg-gray-100 dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-700 flex flex-col pt-1">
+    <!-- ── 좌측 아이콘 레일 (64px) ── -->
+    <div class="w-16 shrink-0 bg-white dark:bg-black141414 border-r border-[#f1f5f9] dark:border-gray-700 flex flex-col items-center pt-3 gap-0.5">
       <div
         v-for="(section, idx) in visibleSections"
         :key="section.id"
         :class="[
-          'flex flex-col items-center py-2.5 cursor-pointer transition-colors duration-100 relative border-r-2',
+          'relative w-12 h-12 rounded-xl flex flex-col items-center justify-center gap-[3px] cursor-pointer transition-all duration-200',
           activeSectionIndex === idx
-            ? 'bg-white dark:bg-[#252525] border-[#287dff]'
-            : 'border-transparent hover:bg-[#f0f0ef] dark:hover:bg-[#2a2a2a]'
+            ? 'bg-[#eff6ff] dark:bg-[#252525]'
+            : 'hover:bg-[#f8fafc] dark:hover:bg-[#2a2a2a]'
         ]"
         @click="activeSectionIndex = idx"
       >
-        <div
-          class="w-7 h-7 rounded-lg flex items-center justify-center shadow-sm"
-          :class="activeSectionIndex === idx ? 'ring-2 ring-[#287dff]/30' : 'bg-white dark:bg-[#2a2a2a]'"
-          :style="activeSectionIndex === idx ? { backgroundColor: section.iconBg } : undefined"
-        >
-          <component
-            :is="iconMap[section.icon]"
-            class="w-3.5 h-3.5"
-            :class="activeSectionIndex === idx ? 'text-white' : 'text-gray-400 dark:text-gray-500'"
-          />
-        </div>
+        <!-- 활성 왼쪽 인디케이터 바 -->
         <span
-          class="text-[9px] mt-0.5 leading-tight text-center px-0.5"
-          :class="activeSectionIndex === idx ? 'text-[#287dff] font-medium' : 'text-gray-400 dark:text-gray-500'"
+          v-if="activeSectionIndex === idx"
+          class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-r bg-[#3b82f6]"
+        />
+        <!-- 아이콘 (20px) -->
+        <component
+          :is="iconMap[section.icon]"
+          class="w-5 h-5"
+          :class="activeSectionIndex === idx ? 'text-[#3b82f6]' : 'text-[#94a3b8] dark:text-gray-500'"
+        />
+        <!-- 레이블 -->
+        <span
+          class="text-[9.5px] leading-tight text-center px-0.5"
+          :class="activeSectionIndex === idx ? 'text-[#3b82f6] font-bold' : 'text-[#94a3b8] dark:text-gray-500'"
         >{{ section.sectionTitle }}</span>
       </div>
     </div>
 
-    <!-- 우측 메뉴 패널 (138px) -->
-    <div class="flex-1 overflow-y-auto pb-10">
-      <!-- 현재 섹션 타이틀 -->
-      <div class="px-3 pt-3 pb-1.5">
-        <span class="text-[11px] font-bold text-[#287dff]">{{ activeSection?.sectionTitle }}</span>
+    <!-- ── 우측 메뉴 패널 (200px) ── -->
+    <div class="w-[200px] bg-[#fafbfc] dark:bg-[#191919] border-r border-[#f1f5f9] dark:border-gray-700 flex flex-col overflow-hidden">
+
+      <!-- 섹션 헤더 -->
+      <div class="px-[18px] pt-4 pb-3 flex items-center justify-between shrink-0 border-b border-[#f1f5f9] dark:border-gray-700">
+        <span class="text-[13px] font-bold text-[#1e293b] dark:text-white">{{ activeSection?.sectionTitle }}</span>
       </div>
 
       <!-- 2차/3차 메뉴 렌더링 -->
-      <nav v-if="activeSection" aria-label="메뉴 네비게이션">
-        <div v-for="menu in activeSection.menus" :key="menu.id">
-          <!-- 자식이 있는 2차 메뉴 -->
-          <template v-if="menu.children && menu.children.length > 0">
-            <!-- 2차 메뉴 헤더 (구분선 스타일) -->
-            <div
-              :class="[
-                'flex items-center justify-between px-3 py-1.5 cursor-pointer',
-                'transition-colors duration-100',
-                hasActiveChild(menu)
-                  ? 'text-[#287dff] dark:text-blue-400'
-                  : 'text-[#91918e] dark:text-[#6b6b6b] hover:text-[#37352f] dark:hover:text-[#cfcfcf]'
-              ]"
-              @click="toggleMenu(menu.id)"
-            >
-              <span class="text-[11px] font-semibold">{{ menu.name }}</span>
-              <span
-                class="text-[8px] inline-block transition-transform duration-150"
-                :style="{ transform: isMenuExpanded(menu.id) ? 'rotate(90deg)' : 'rotate(0deg)' }"
-              >▶</span>
-            </div>
+      <div class="flex-1 overflow-y-auto py-2" key="section-panel">
+        <nav v-if="activeSection" aria-label="메뉴 네비게이션">
+          <div v-for="menu in activeSection.menus" :key="menu.id">
 
-            <!-- 3차 메뉴 링크 목록 -->
-            <div v-show="isMenuExpanded(menu.id)" class="mb-1">
+            <!-- 자식이 있는 2차 메뉴 -->
+            <template v-if="menu.children && menu.children.length > 0">
+              <div
+                :class="[
+                  'relative flex items-center gap-[9px] px-[18px] py-[9px] cursor-pointer transition-all duration-150',
+                  hasActiveChild(menu)
+                    ? 'text-[#1e293b] dark:text-white font-semibold'
+                    : 'text-[#64748b] dark:text-[#6b6b6b] hover:text-[#1e293b] dark:hover:text-[#cfcfcf] hover:bg-bodyBg dark:hover:bg-[#252525]'
+                ]"
+                @click="toggleMenu(menu.id)"
+              >
+                <!-- L2 활성 왼쪽 인디케이터 바 -->
+                <span
+                  v-if="hasActiveChild(menu)"
+                  class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-[18px] rounded-r bg-[#3b82f6]"
+                />
+                <!-- L2 아이콘 박스 (26px, rounded-7) -->
+                <span
+                  class="w-[26px] h-[26px] rounded-[7px] flex items-center justify-center shrink-0 transition-all duration-200"
+                  :class="hasActiveChild(menu) ? 'bg-[#eff6ff] text-[#3b82f6]' : 'bg-bodyBg text-[#94a3b8]'"
+                >
+                  <component :is="iconMap[menu.icon] || iconMap['IconMenu']" class="w-3.5 h-3.5" />
+                </span>
+                <span class="flex-1 text-[13px] whitespace-nowrap overflow-hidden text-ellipsis">{{ menu.name }}</span>
+                <!-- 펼침 화살표 -->
+                <svg
+                  width="13" height="13" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"
+                  class="shrink-0 transition-transform duration-200"
+                  :class="hasActiveChild(menu) ? 'text-[#3b82f6]' : 'text-[#c1c8d4]'"
+                  :style="{ transform: isMenuExpanded(menu.id) ? 'rotate(90deg)' : 'rotate(0deg)' }"
+                ><path d="m9 18 6-6-6-6" /></svg>
+              </div>
+
+              <!-- 3차 메뉴 링크 목록 -->
+              <div v-show="isMenuExpanded(menu.id)" class="mb-1">
+                <router-link
+                  v-for="child in menu.children"
+                  :key="child.id"
+                  :to="child.url"
+                  custom
+                  v-slot="{ navigate, isActive }"
+                >
+                  <button
+                    :class="[
+                      'w-full text-left pr-[18px] py-[7px] text-[12.5px] cursor-pointer transition-all duration-100',
+                      isActive
+                        ? 'text-[#3b82f6] dark:text-blue-400 bg-[#eff6ff] dark:bg-[#252525] font-semibold'
+                        : 'text-[#64748b] dark:text-[#cfcfcf] hover:bg-bodyBg dark:hover:bg-[#252525] hover:text-[#3b82f6]'
+                    ]"
+                    style="padding-left: 54px"
+                    :aria-current="isActive ? 'page' : undefined"
+                    @click="handleChildClick(child, navigate)"
+                  >
+                    <span class="flex items-center gap-[9px]">
+                      <span
+                        class="rounded-full shrink-0 w-[5px] h-[5px] transition-all duration-200"
+                        :style="isActive
+                          ? { background: '#3b82f6', boxShadow: '0 0 0 3px rgba(59,130,246,0.15)', transform: 'scale(1.3)' }
+                          : { background: '#cbd5e1' }"
+                      />
+                      {{ child.name }}
+                    </span>
+                  </button>
+                </router-link>
+              </div>
+            </template>
+
+            <!-- 자식이 없는 단일 2차 메뉴 -->
+            <template v-else>
               <router-link
-                v-for="child in menu.children"
-                :key="child.id"
-                :to="child.url"
+                :to="menu.url || '/'"
                 custom
                 v-slot="{ navigate, isActive }"
               >
                 <button
                   :class="[
-                    'w-full text-left pl-3 pr-2 py-1.5 text-[12px] cursor-pointer',
-                    'transition-colors duration-100',
+                    'relative w-full flex items-center gap-[9px] px-[18px] py-[9px] cursor-pointer text-[13px] transition-all duration-100',
                     isActive
-                      ? 'text-[#287dff] dark:text-blue-400 bg-[#f0f0ef] dark:bg-[#252525] font-medium'
-                      : 'text-[#37352f] dark:text-[#cfcfcf] hover:bg-[#f0f0ef] dark:hover:bg-[#252525]'
+                      ? 'text-[#1e293b] dark:text-white font-semibold'
+                      : 'text-[#64748b] dark:text-[#cfcfcf] hover:text-[#1e293b] dark:hover:text-white hover:bg-bodyBg dark:hover:bg-[#252525]'
                   ]"
                   :aria-current="isActive ? 'page' : undefined"
-                  @click="handleChildClick(child, navigate)"
+                  @click="handleSingleClick(menu, navigate)"
                 >
-                  <span class="flex items-center gap-1.5">
-                    <span
-                      v-if="isActive"
-                      class="w-1 h-1 rounded-full bg-[#287dff] dark:bg-blue-400 shrink-0"
-                    />
-                    <span v-else class="w-1 h-1 shrink-0" />
-                    {{ child.name }}
+                  <span
+                    v-if="isActive"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-[18px] rounded-r bg-[#3b82f6]"
+                  />
+                  <!-- 아이콘 박스 -->
+                  <span
+                    class="w-[26px] h-[26px] rounded-[7px] flex items-center justify-center shrink-0 transition-all duration-200"
+                    :class="isActive ? 'bg-[#eff6ff] text-[#3b82f6]' : 'bg-bodyBg text-[#94a3b8]'"
+                  >
+                    <component :is="iconMap[menu.icon] || iconMap['IconMenu']" class="w-3.5 h-3.5" />
                   </span>
+                  {{ menu.name }}
                 </button>
               </router-link>
-            </div>
-          </template>
-
-          <!-- 자식이 없는 단일 링크 2차 메뉴 -->
-          <template v-else>
-            <router-link
-              :to="menu.url || '/'"
-              custom
-              v-slot="{ navigate, isActive }"
-            >
-              <button
-                :class="[
-                  'w-full flex items-center gap-1.5 px-3 py-1.5 cursor-pointer text-[12px]',
-                  'transition-colors duration-100',
-                  isActive
-                    ? 'text-[#287dff] dark:text-blue-400 bg-[#f0f0ef] dark:bg-[#252525] font-medium'
-                    : 'text-[#37352f] dark:text-[#cfcfcf] hover:bg-[#f0f0ef] dark:hover:bg-[#252525]'
-                ]"
-                :aria-current="isActive ? 'page' : undefined"
-                @click="handleSingleClick(menu, navigate)"
-              >
-                <span
-                  v-if="isActive"
-                  class="w-1 h-1 rounded-full bg-[#287dff] dark:bg-blue-400 shrink-0"
-                />
-                <span v-else class="w-1 h-1 shrink-0" />
-                {{ menu.name }}
-              </button>
-            </router-link>
-          </template>
-        </div>
-      </nav>
+            </template>
+          </div>
+        </nav>
+      </div>
     </div>
   </div>
 </template>
@@ -142,7 +168,34 @@ import {
   IconBook,
   IconShoppingCart,
   IconMenu,
-  IconList
+  IconList,
+  IconMessageCircle,
+  IconPhone,
+  IconTag,
+  IconMessage as IconBrandKakao,
+  IconDeviceMobile,
+  IconMail,
+  IconTarget,
+  IconRobot,
+  IconGauge,
+  IconSparkles,
+  IconUsersGroup,
+  IconChartPie,
+  IconBuildingStore,
+  IconUserCog,
+  IconPlug,
+  IconCurrencyWon,
+  IconShield,
+  IconCalendar,
+  IconId,
+  IconClipboardCheck,
+  IconHome,
+  IconArrowsExchange,
+  IconFileText as IconFileContract,
+  IconChartLine,
+  IconHistory,
+  IconHeadset,
+  IconMicrophone2 as IconMicrophone,
 } from '@tabler/icons-vue';
 import type { MenuSection, MenuItem, ChildMenuItem } from '../type/left-menu.interface';
 import { useLeftMenuStore } from '../store/left-menu.store';
@@ -161,8 +214,9 @@ const guideMenuStore = useGuideMenuStore();
 const isGuideArea = computed(() => route.path.startsWith('/guide'));
 const activeMenuStore = computed(() => isGuideArea.value ? guideMenuStore : leftMenuStore);
 
-// 섹션 아이콘 매핑
+// 섹션 + L2 메뉴 아이콘 매핑
 const iconMap: Record<string, Component> = {
+  // 섹션 아이콘
   IconUsers,
   IconSpeakerphone,
   IconChartBar,
@@ -172,7 +226,35 @@ const iconMap: Record<string, Component> = {
   IconBookOpen: IconBook,
   IconShoppingCart,
   IconMenu,
-  IconList
+  IconList,
+  // L2 메뉴 아이콘
+  IconMessageCircle,
+  IconPhone,
+  IconTag,
+  IconBrandKakao,
+  IconDeviceMobile,
+  IconMail,
+  IconTarget,
+  IconRobot,
+  IconGauge,
+  IconSparkles,
+  IconUsersGroup,
+  IconChartPie,
+  IconBuildingStore,
+  IconUserCog,
+  IconPlug,
+  IconCurrencyWon,
+  IconShield,
+  IconCalendar,
+  IconId,
+  IconClipboardCheck,
+  IconHome,
+  IconArrowsExchange,
+  IconFileContract,
+  IconChartLine,
+  IconHistory,
+  IconHeadset,
+  IconMicrophone,
 };
 
 // 활성 섹션 인덱스 (듀얼 패널 핵심 상태)

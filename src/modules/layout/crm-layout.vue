@@ -3,8 +3,8 @@
     <!-- CRM 헤더 -->
     <header
       :class="[
-        'fixed top-0 left-0 right-0 z-50 h-16',
-        'bg-white dark:bg-[#141414] border-b border-gray-200 dark:border-gray-800'
+        'fixed top-0 left-0 right-0 z-50 h-[58px]',
+        'bg-white dark:bg-black141414 border-b border-[#eef0f4] dark:border-gray-800'
       ]"
     >
       <!-- 데스크톱 상단 3-depth 메뉴 (lg 이상) -->
@@ -15,7 +15,7 @@
       />
 
       <!-- 모바일 헤더 (lg 미만) -->
-      <div class="lg:hidden flex items-center justify-between h-full px-4">
+      <div class="lg:hidden flex items-center justify-between h-[58px] px-4">
         <!-- 브랜드 로고 -->
         <router-link to="/" class="flex items-center gap-2">
           <div class="flex items-center justify-center w-8 h-8 bg-[#287dff] rounded-lg">
@@ -29,7 +29,7 @@
             </svg>
           </div>
           <div class="flex flex-col">
-            <span class="text-base font-bold text-gray-900 dark:text-white leading-tight">피치CRM</span>
+            <span class="font-bold text-[#1e293b] dark:text-white leading-tight">피치CRM</span>
           </div>
         </router-link>
 
@@ -48,7 +48,7 @@
     </header>
 
     <!-- 콘텐츠 영역 -->
-    <div class="bg-bodyBg mt-16 duration-200 dark:bg-black">
+    <div class="bg-[#f4f6f9] mt-[58px] duration-200 dark:bg-black">
       <!-- 좌측 메뉴 (데스크톱에서만 표시) -->
       <div class="hidden lg:block">
         <left-menu @menu-toggle="handleMenuToggle" />
@@ -58,8 +58,8 @@
       <main
         ref="contentRef"
         :class="[
-          'h-full transition-all duration-200',
-          isDesktop ? (isMenuHidden ? 'lg:ps-[60px]' : 'lg:ps-[186px]') : ''
+          'min-h-screen bg-white transition-all duration-200',
+          isDesktop ? (isMenuHidden ? 'lg:ps-16' : 'lg:ps-[264px]') : ''
         ]"
       >
         <div id="work_inner" class="h-full">
