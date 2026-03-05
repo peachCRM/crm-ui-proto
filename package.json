@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "vite --mode localhost --host",
     "local": "vite --mode localhost --host",
     "prod": "vite --mode production --host",
     "dev": "vite --host 0.0.0.0",
