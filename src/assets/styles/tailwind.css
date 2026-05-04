@@ -6,7 +6,7 @@
 @import '@nuxt/ui';
 @import './components.css';
 @import './theme.css';
-/* @plugin 'tailwind-scrollbar' {} */
+@plugin 'tailwind-scrollbar' {}
 
 @layer base {
   *,

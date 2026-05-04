@@ -1,3 +1,13 @@
+/* 테이블 헤더 줄바꿈 방지 */
+[data-slot='th'] {
+  white-space: nowrap;
+}
+
+/* 모달 오버레이 */
+[data-slot='overlay'] {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
 /* 기본 스타일 */
 .font-base {
   font-size: 14px;

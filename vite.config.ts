@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import ui from '@nuxt/ui/vite';
 import path from 'path';
 import tailwindcssVite from '@tailwindcss/vite';
+import inject from '@rollup/plugin-inject';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
@@ -10,13 +11,20 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     vue(),
+    inject({
+      'window.Quill': ['@rafaeljunioxavier/vue-quill-fix', 'Quill'],
+      Quill: ['@rafaeljunioxavier/vue-quill-fix', 'Quill']
+    }),
     tailwindcssVite(),
     ui({
+      theme: {
+        colors: ['primary', 'secondary', 'info', 'success', 'warning', 'error']
+      },
       ui: {
         colors: {
-          primary: 'violet',
-          secondary: 'blue',
-          neutral: 'gray'
+          primary: 'blue',
+          secondary: 'emerald',
+          neutral: 'zinc'
         },
         notifications: {
           position: 'top-right'
@@ -31,23 +39,15 @@ export default defineConfig({
             root: 'w-full'
           },
           defaultVariants: {
-            size: 'md'
+            size: 'lg'
           }
         },
         button: {
           slots: {
-            base: 'cursor-pointer !ring-gray-200 !border-gray-200'
-          },
-          variants: {
-            size: {
-              md: {
-                base: 'font-normal',
-                leadingIcon: 'size-4'
-              }
-            }
+            base: 'cursor-pointer'
           },
           defaultVariants: {
-            size: 'md'
+            size: 'lg'
           }
         },
         textarea: {
@@ -56,23 +56,19 @@ export default defineConfig({
           }
         },
         table: {
+          slots: {
+            th: 'whitespace-nowrap'
+          },
           defaultVariants: {
             size: 'lg'
           }
         },
         select: {
-          base: ['!ring-gray-200 !border-gray-200'],
-          defaultVariants: {
-            size: 'md',
-            selectedIcon: ''
-          },
           slots: {
-            overlay: 'z-[100]',
-            content: 'z-[100]',
-            item: [
-              'data-[state=checked]:!bg-violet-50 dark:data-[state=checked]:!bg-violet-950/50 data-[state=checked]:!text-black data-[state=checked]:!font-semibold dark:data-[state=checked]:!text-violet-400'
-            ],
-            trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200'
+            content: 'z-[100]'
+          },
+          defaultVariants: {
+            size: 'lg'
           }
         },
         modal: {
@@ -80,16 +76,21 @@ export default defineConfig({
             header: 'min-h-10',
             body: 'pt-0 sm:pt-0',
             title: 'text-lg p-0',
-            overlay: 'z-[30] bg-black/50 dark:bg-black/80',
+            overlay: 'z-[30] bg-black/60',
             content: 'z-[30] bg-default flex flex-col focus:outline-none divide-none !ring-0'
           }
         },
         slideover: {
-          slots: { overlay: 'z-[100]', content: 'z-[100]' }
+          slots: { overlay: 'z-[70]', content: 'z-[70]' }
         },
         card: {
           defaultVariants: {
             size: 'lg'
+          }
+        },
+        badge: {
+          defaultVariants: {
+            size: 'md'
           }
         }
       }
