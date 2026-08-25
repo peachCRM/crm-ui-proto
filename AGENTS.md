@@ -1,40 +1,29 @@
-# 피치CRM UI 프로토타입 에이전트 지침
+# crm-ui-proto-www - AI 에이전트 가이드
 
-Vue 3.5 + TypeScript + Nuxt UI v4 + TailwindCSS v4 + Pinia 기반 CRM SaaS UI 프로토타입. Backend 없이 Mock 데이터로만 동작한다.
+Vue 3 + Nuxt UI v4 + TailwindCSS v4 CRM SaaS UI 프로토타입. Backend 없이 Mock 데이터로만 동작한다. 루트가 프로젝트 루트이고 **npm**을 쓴다. 모듈은 `src/modules/`·`src/modules-domain/`·`src/modules-guide/`.
 
-## 사실원과 탐색
+## 탐색
 
-- 현재 checkout의 소스·`../crm-ai-dev/prd/` 확정 Spec이 최종 SoT다.
-- 코드 심볼·경로·호출부는 `rg`로 찾는다. `docs/`는 소규모이므로 `rg -l "<키워드>" docs/`로 충분하다 (이 저장소에 qmd 인덱스·`docs/wiki/`는 없다).
-- 모듈 구조·공통 컴포넌트 목록은 문서가 아니라 `src/modules/`, `src/modules-domain/`, `src/modules/_common/components/`를 직접 읽어 확인한다.
-
-## 실행 라우팅 (필수 스킬)
-
-- 디자인 방향 결정·신규 화면 디자인은 `gen-design` 스킬이 SoT다 (색상·간격·AI Slop 금지 패턴 포함).
-- CRUD·목록·상세·등록·수정 UI 생성은 `gen-ui` 스킬이 SoT다 (UI 패턴 선택, Store·라우트·검색·Yup 검증 패턴 포함).
-- UI 작업은 gen-design → gen-ui 순서로 적용하고 건너뛰지 않는다. 시각 규칙 상세는 root `DESIGN.md`를 따른다.
-
-## 스킬 오버라이드 (스킬의 generic 규칙이 아니라 이 저장소 기준)
-
-- 스킬이 말하는 `front/` 경로·`bun` 명령 대신, 이 저장소는 **루트가 프로젝트 루트이고 `npm`을 쓴다**.
-- 스킬 예시의 `p-date-picker`는 이 저장소에 없다. 실제 컴포넌트는 `p-date-picker-work` / `p-date-picker-multi-work`다.
+- 확정 근거는 현재 checkout의 소스와 `../crm-ai-dev/prd/` 확정 Spec(`00-MVP-개발전략.md` ~ 업종 스펙)이다. qmd 인덱스·wiki·E2E가 없다 — 심볼·경로·호출부·컴포넌트는 `rg`로 찾고, 공통 컴포넌트는 `src/modules/_common/components/` 실물을 확인한다. 상세 가이드라인은 `.cursor/rules/*.mdc`.
+- UI 작업은 `/gen-design`(방향·AI Slop 금지 패턴) → `/gen-ui`(패턴·Store·라우트·Yup 검증) 순서를 건너뛰지 않는다.
+- 스킬 오버라이드: 스킬의 `front/` 경로·`bun` 명령은 이 저장소에서 루트 경로·`npm`이다. 스킬 예시의 `p-date-picker`는 없고 `p-date-picker-work` / `p-date-picker-multi-work`가 실물이다.
 
 ## Must Follow
 
-- 리치 텍스트 에디터는 `tiny-editor`만 쓴다. `quill/` 폴더가 존재하지만 Quill 사용 금지.
-- 공통 컴포넌트는 새로 만들지 말고 `src/modules/_common/components/`의 `p-` 컴포넌트를 우선 사용한다.
-- 신규 모듈 골격은 `src/modules/test-data/`(가이드 코드)를 참조한다. Store는 Option API.
-- Mock 데이터는 Store에서 직접 관리하고, 실제 API 호출 위치는 주석으로 엔드포인트를 표시한다.
-- 업무 로직·권한·코드값·상태값·인증값·외부 연동 결과를 하드코딩하거나 임의 폴백으로 성공 처리하지 않는다. 원천 계약이 없으면 구현을 중단하고 누락을 보고한다.
-- 라우트는 `src/router.ts`에 등록하고, 모듈별 라우트 파일은 `_[모듈명].routes.ts`를 쓴다.
+- **업무 로직·권한·코드값·상태값·인증값·외부 연동 결과를 하드코딩하거나 임의 폴백으로 성공 처리하지 않는다.** 프로토타입 Mock만 예외: Store에서 관리하고 실제 API 위치는 주석으로 표시한다. Mock을 실제 연동인 것처럼 위장하지 않는다.
+- 리치 에디터는 `tiny-editor`만. `quill/` 폴더가 있어도 Quill 사용 금지.
+- 라우트는 모듈별 `_[모듈명].routes.ts`에 정의하고 `src/router.ts`에 등록한다.
+- 단일 사용처 추상화 금지 (가이드 패턴보다 우선한다).
+
+## 프론트엔드
+
+골격·Store 구성·컴포넌트 배치는 `src/modules/test-data/`를 따른다.
+
+- 프론트 UI 신규·변경 시 root `DESIGN.md`의 색상·타이포그래피·간격·컴포넌트 원칙을 적용한다. 기존 공통 컴포넌트·스타일과 충돌하면 checkout 소스를 우선하고 사유를 남긴다.
+- Store에 `isLoading`/`error` 상태와 try-catch를 두지 않는다. 모든 데이터 접근은 Store를 통해 하고 template에서는 `computed()`로 래핑한다. Store는 Pinia Option API.
+- TailwindCSS 클래스 5개 이상은 배열로 그룹화한다.
+- Store TDD·단위 테스트를 새로 작성하지 않는다.
 
 ## 완료 게이트
 
-- UI 변경: `npm run build:check && npm run lint:fix` (build:check = vue-tsc -b + vite build)
-- 테스트가 있는 변경: `npm run test:run`
-
-## 참조 문서
-
-- 확정 Spec: `../crm-ai-dev/prd/00-MVP-개발전략.md` ~ `04-부동산-업종-스펙.md`
-- 시각 디자인: root `DESIGN.md`
-- 개발 가이드라인: `.cursor/rules/*.mdc`
+`npm run build:check && npm run lint:fix` (build:check = vue-tsc -b + vite build)
